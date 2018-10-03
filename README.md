@@ -1,5 +1,7 @@
 # Abbey2
 
+**[Live demo at rodiongork.pythonanywhere.com](https://rodiongork.pythonanywhere.com/)**
+
 To create convenient environment, use `docker`:
 
 - first run `docker-build.sh` to create image with suitable version of python and necessary libraries
