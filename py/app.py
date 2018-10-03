@@ -1,8 +1,10 @@
-from flask import Flask
-app = Flask(__name__)
+import flask
+app = flask.Flask(__name__, static_url_path = '/s')
 
 @app.route('/')
 def hello_world():
-    return 'Hi, People!!!'
+    return flask.render_template('index.html')
 
-app.run(host='0.0.0.0', port=5000, debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
