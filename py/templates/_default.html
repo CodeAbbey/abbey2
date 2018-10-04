@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %} - Abbey2</title>
     <link href="{{ url_for('static', filename = 'css/bs.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'css/common.css') }}" rel="stylesheet">
   </head>
 
   <body>
@@ -26,6 +27,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Help</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('login_page') }}">Login</a>
             </li>
           </ul>
         </div>

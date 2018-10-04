@@ -5,7 +5,7 @@
 {% block content %}
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="mt-5">Coming Soon</h1>
+    <h1>Coming Soon</h1>
     {% for item in data %}
     <p><a href="{{ url_for('tasks.task_view', id = item[0]) }}">{{ item[1] }}</a></p>
     {% endfor %}

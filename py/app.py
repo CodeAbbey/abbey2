@@ -8,6 +8,10 @@ app.register_blueprint(tasks_ctl)
 def main_page():
     return flask.render_template('index.html')
 
+@app.route('/login')
+def login_page():
+    return flask.render_template('login.html')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
 
