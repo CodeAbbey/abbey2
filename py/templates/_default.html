@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %} - Abbey2</title>
+    <link href="{{ url_for('static', filename = 'css/bs.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark static-top">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('main_page') }}">Abbey2</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('tasks.task_list') }}">Problems</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Ranking</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Help</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename = 'js/jq.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/bs.js') }}"></script>
+
+  </body>
+
+</html>
+
