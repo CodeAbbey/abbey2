@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-lg-6 col-sm-12 offset-lg-3 text-center">
     <h1>Welcome, Friend!</h1>
-    <form>
+    <form action="{{ url_for('login_form') }}" method="POST">
       <div class="form-group">
         <input type="text" name="username" class="form-control" placeholder="your username">
       </div>

@@ -1,0 +1,14 @@
+{% extends "_default.html" %}
+
+{% block title %}Your Dasboard{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <h1>Your dashboard, {{ username }}</h1>
+    <p>Go to <a href="{{ url_for('tasks.task_list') }}">Task list</a></p>
+    <p>got tired? <a href="{{ url_for('logout') }}">Log out</a></p>
+  </div>
+</div>
+{% endblock %}
+
