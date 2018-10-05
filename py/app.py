@@ -1,3 +1,4 @@
+import os
 import flask
 import functools
 from ctl.tasks import tasks_ctl
@@ -28,7 +29,7 @@ def login_required(f):
     @functools.wraps(f)
     def decorated_function(*args, **kwargs):
         if not 'username' in flask.session:
-            return flask.redirect(flask.url_for('login_page', next=request.url))
+            return flask.redirect(flask.url_for('login_page', next = flask.request.url))
         return f(*args, **kwargs)
     return decorated_function
 
@@ -45,4 +46,5 @@ def logout():
 if __name__ == '__main__':
     app.secret_key = 'super secret key for debugging'
     app.run(host='0.0.0.0', port=5000, debug=True)
-
+else:
+    app.secret_key = os.environ.get("SECRET_KEY", default=None)
