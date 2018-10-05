@@ -1,1 +1,1 @@
-docker build -t py3-abbey docker
+docker build -t py3-abbey docker/py
