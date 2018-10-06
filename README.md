@@ -2,13 +2,24 @@
 
 **[Live demo at rodiongork.pythonanywhere.com](https://rodiongork.pythonanywhere.com/)**
 
-To create convenient environment, use `docker`:
+**[Information for contributors](https://github.com/CodeAbbey/abbey2/wiki)**
 
-- first run `docker-build.sh` to create image with suitable version of python and necessary libraries
-- then whenever you need to have test server running, execute `docker-py.sh`
-- access the app in the browser by `http://localhost:5000` address
-- pressing `Ctrl-C` (in the docker console) will stop the server
+To work with project locally, one needs `Python 3.7` with certain libraries and `MySQL 5.7`.  
+The **recommended way** to setup this is by using `docker`. It creates small "virtual machines" (called "containers")
+with all stuff installed - and you need not spoil your system configuration.
 
-The first step needs only be done once (unless the image is manually removed later).
+- first run `./docker/build-py3.sh` to create docker image with python and its libraries
+- in the same manner run `./docker/build-mysql.sh` to create image with database and schema
+- then whenever you need to have test server running, execute in separate console `./docker/mysql.sh` and
+    when you see it started (may take several seconds), execute `./docker/py-server.sh`
+    to launch application in the test server
+- access the application in the browser by `http://localhost:5000` address
+- whenever you change files in `py` subfolder, the server will automatically reload them
+- however it may sometimes crash if you write erroneous code - then just relaunch `./docker/py-server.sh` (after fixing code)
+- pressing `Ctrl-C` (in this docker console) will stop the server
+- to stop the database server, use `./docker/mysql-stop.sh
+- to check python code use `./docker/py-check.sh`
 
-These instructions may change (as we'll need more containers for real web-server, database etc)
+The first steps (building images) need only be done once (unless the image is manually removed later).
+
+Learn a bit more about docker to find out how to use python and mysql consoles in the running containers
