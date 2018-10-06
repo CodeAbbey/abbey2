@@ -10,11 +10,8 @@ def task_list():
 
 @tasks_ctl.route('/<id>')
 def task_view(id):
-    # add preprocessing to filter id, have to be lowercase, digits, or -
-    # we filter to get clean id / throw extra elements
-    # at the end of the day, id == cleaned_id
-    id_checked = "".join([c.lower() for c in id if (c.isalnum() or c == '-')])
-    if id_checked in task_info:
-        return flask.render_template('tasks/view.html', data = [id,task_info[id_checked]])
+    id_clean = "".join([c.lower() for c in id if (c.isalnum() or c == '-')])
+    if id_clean in task_info:
+        return flask.render_template('tasks/view.html', data = [id,task_info[id_clean]])
     else:
         flask.abort(404)
