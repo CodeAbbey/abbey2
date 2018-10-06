@@ -1,0 +1,7 @@
+{
+    "DB_HOST": "mysql.docker.host",
+    "DB_USER": "root",
+    "DB_PASSWORD": "root",
+    "DB_NAME": "abbey",
+    "SECRET_KEY": null
+}

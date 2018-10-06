@@ -6,4 +6,4 @@ install:
   - pip3 install -r docker/py/py-libs.txt
 # command to run tests
 script:
-  - flake8 --ignore=W391 py
+  - flake8 py
