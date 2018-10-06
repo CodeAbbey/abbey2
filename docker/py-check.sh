@@ -1,1 +1,1 @@
-docker run -it --rm --name py3-abbey-run -v $(pwd)/$(dirname "$0")/../py:/code -p 5000:5000 py3-abbey flake8 /code
+docker run -it --rm --name py3-abbey-run -v $(pwd)/$(dirname "$0")/../py:/code -p 5000:5000 py3-abbey flake8 --ignore=W391 /code
