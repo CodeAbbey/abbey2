@@ -51,13 +51,13 @@ def logout():
     return flask.redirect(flask.url_for('main_page'))
 
 
-@app.route('/dbtest')
-def dbtest():
+@app.route('/ranking')
+def ranking():
     cur = dao.utils.db_conn().cursor()
     cur.execute('select count(*) from users')
     (count,) = cur.fetchone()
     cur.close()
-    return 'Total users: ' + str(count)
+    return flask.render_template('ranking.html', user_count=count)
 
 
 @app.errorhandler(404)
