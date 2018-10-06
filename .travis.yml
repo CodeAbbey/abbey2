@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.7-dev"
+# command to install dependencies
+install:
+  - pip3 install -r docker/py/py-libs.txt
+# command to run tests
+script:
+  - flake8 --ignore=W391 py
