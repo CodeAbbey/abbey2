@@ -20,5 +20,7 @@ def task_view(id):
         flask.abort(404)
         return
     (title, text) = task_data
-    data = {'title': title, 'text': mistune.markdown(text)}
+    renderer = mistune.Renderer(escape=False)
+    markdown = mistune.Markdown(renderer=renderer)
+    data = {'title': title, 'text': markdown(text)}
     return flask.render_template('tasks/view.html', data=data)
