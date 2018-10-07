@@ -14,3 +14,20 @@ def db_close():
     db = g.pop('db', None)
     if db is not None:
         db.close()
+
+
+def query_list(table, fields='*'):
+    cur = db_conn().cursor()
+    cur.execute('select ' + fields + ' from ' + table)
+    res = cur.fetchall()
+    cur.close()
+    return res
+
+
+def query_one(table, clause, fields='*'):
+    # todo: improve with parameterized query
+    cur = db_conn().cursor()
+    cur.execute('select ' + fields + ' from ' + table + ' where ' + clause)
+    res = cur.fetchone()
+    cur.close()
+    return res

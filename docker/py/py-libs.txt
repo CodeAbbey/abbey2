@@ -1,3 +1,4 @@
 Flask==1.0.2
 mysql-connector==2.1.6
 flake8==3.5.0
+mistune==0.8.3
