@@ -3,5 +3,6 @@
     "DB_USER": "root",
     "DB_PASSWORD": "root",
     "DB_NAME": "abbey",
+    "PWD_SALT": "dummy-salt",
     "SECRET_KEY": null
 }

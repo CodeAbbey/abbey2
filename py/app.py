@@ -1,63 +1,19 @@
 import os
 import json
 import flask
-import functools
 from ctl.tasks import tasks_ctl
+from ctl.users import users_ctl
 import dao.utils
 
 
 app = flask.Flask(__name__, static_url_path='/s')
 app.register_blueprint(tasks_ctl)
+app.register_blueprint(users_ctl)
 
 
 @app.route('/')
 def main_page():
     return flask.render_template('index.html')
-
-
-@app.route('/login', methods=['GET'])
-def login_page():
-    return flask.render_template('login.html')
-
-
-@app.route('/login', methods=['POST'])
-def login_form():
-    if 'username' not in flask.request.form:
-        return 'Something wrong'
-    flask.session['username'] = flask.request.form['username']
-    return flask.redirect(flask.url_for('dashboard'))
-
-
-def login_required(f):
-    @functools.wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'username' not in flask.session:
-            return flask.redirect(
-                flask.url_for('login_page', next=flask.request.url))
-        return f(*args, **kwargs)
-    return decorated_function
-
-
-@app.route('/dash')
-@login_required
-def dashboard():
-    return flask.render_template(
-        'dashboard.html', username=flask.session['username'])
-
-
-@app.route('/logout')
-def logout():
-    flask.session.clear()
-    return flask.redirect(flask.url_for('main_page'))
-
-
-@app.route('/ranking')
-def ranking():
-    cur = dao.utils.db_conn().cursor()
-    cur.execute('select count(*) from users')
-    (count,) = cur.fetchone()
-    cur.close()
-    return flask.render_template('ranking.html', user_count=count)
 
 
 @app.errorhandler(404)

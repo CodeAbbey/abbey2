@@ -24,16 +24,16 @@
               <a class="nav-link" href="{{ url_for('tasks.task_list') }}">Problems</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('ranking') }}">Ranking</a>
+              <a class="nav-link" href="{{ url_for('users.ranking') }}">Ranking</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Help</a>
             </li>
             <li class="nav-item">
               {% if not 'username' in session %}
-              <a class="nav-link" href="{{ url_for('login_page') }}">Login</a>
+              <a class="nav-link" href="{{ url_for('users.login_page') }}">Login</a>
               {% else %}
-              <a class="nav-link" href="{{ url_for('dashboard') }}">{{ session['username'] }}</a>
+              <a class="nav-link" href="{{ url_for('users.dashboard') }}">{{ session['username'] }}</a>
               {% endif %}
             </li>
           </ul>
@@ -41,12 +41,23 @@
       </div>
     </nav>
 
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="container">
+        {% for message in messages %}
+        <div class="alert alert-warning alert-autohide" role="alert">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+
     <div class="container">
       {% block content %}{% endblock %}
     </div>
 
     <script src="{{ url_for('static', filename = 'js/jq.js') }}"></script>
     <script src="{{ url_for('static', filename = 'js/bs.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/main.js') }}"></script>
 
   </body>
 
