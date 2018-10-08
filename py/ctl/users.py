@@ -2,6 +2,7 @@ import base64
 import hashlib
 import functools
 import flask
+import re
 
 import dao.utils
 import dao.users
@@ -29,15 +30,30 @@ def login_form():
     form = flask.request.form
     if ('username' not in form) or ('password' not in form):
         return 'Something wrong'
-    username, password = form['username'], form['password']
-    if len(username) < 7 or len(password) < 7:
-        flask.flash('Username and Password should have at least 7 symbols!')
+    username, password = form['username'].lower(), form['password']
+    err = check_creds_format_error(username, password)
+    if err is not None:
+        flask.flash(err)
         return flask.redirect(flask.url_for('users.login_form'))
-    pwd_hash = password_hash(form['password'])
+    pwd_hash = password_hash(password)
     if form['email'] == '':
         return attempt_login(username, pwd_hash)
     else:
         return attempt_register(username, pwd_hash, form['email'])
+
+
+def check_creds_format_error(username, password):
+    if len(username) < 7 or len(username) > 31:
+        return 'Please make username between 7..31 chars'
+    t = re.sub(r'[a-z0-9\-\.\_]', '', username)
+    if t != '':
+        return 'Username: letters, digits, dash, dot and underscore'
+    if len(password) < 7:
+        return 'Please create password at least 7 chars'
+    t = re.sub(r'[a-z0-9\-\.\!\@\#\$\%\^\&\*\(\)\_]+', '', password)
+    if t != '':
+        return 'Password: letters, digits and some punctuation'
+    return None
 
 
 def password_hash(password):
@@ -51,11 +67,11 @@ def attempt_login(username, password):
     if uid is None:
         flask.flash('Wrong Username or Password!')
         return flask.redirect(flask.url_for('users.login_form'))
-    return login_success()
+    return login_success(username)
 
 
 def attempt_register(username, password, email):
-    uid = dao.users.find_with_creds(username, password)
+    uid = dao.users.find_with_creds(username)
     if uid is not None:
         flask.flash('Username is already registered!')
         return flask.redirect(flask.url_for('users.login_form'))
