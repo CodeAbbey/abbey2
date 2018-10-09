@@ -54,6 +54,15 @@
     <div class="container">
       {% block content %}{% endblock %}
     </div>
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2 text-center text-muted">
+          <hr/>
+          <a href="https://github.com/CodeAbbey/abbey2/graphs/contributors">(c) Rodion Gorkovenko and CodeAbbey community</a>
+        </div>
+      </div>
+    </div>
 
     <script src="{{ url_for('static', filename = 'js/jq.js') }}"></script>
     <script src="{{ url_for('static', filename = 'js/bs.js') }}"></script>
