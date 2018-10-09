@@ -13,3 +13,8 @@ def load_one(id):
     (title,) = res
     (text,) = dao.utils.query_one('blobs', "id='t." + id + ".en'", 'val')
     return (title, text.decode('utf-8'))
+
+
+def load_checker(id):
+    res = dao.utils.query_one('blobs', "id='t." + id + ".chk'", 'val')
+    return res[0] if res is not None else None

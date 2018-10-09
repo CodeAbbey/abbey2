@@ -1,0 +1,21 @@
+{% extends "_default.html" %}
+
+{% block title %}Submission Result{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <h1>Submission Result</h1>
+    {% if result.status %}
+    <p class="green">Your answer is correct, congratulations!</p>
+    {% else %}
+    <p class="red">Your answer is wrong, sorry...</p>
+    <p>You replied with:</p>
+    <pre>{{ result.answer }}</pre>
+    <p>And expected was:</p>
+    <pre>{{ result.expected }}</pre>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
