@@ -43,8 +43,8 @@ def login_form():
 
 
 def check_creds_format_error(username, password):
-    if len(username) < 7 or len(username) > 31:
-        return 'Please make username between 7..31 chars'
+    if len(username) < 4 or len(username) > 31:
+        return 'Please make username between 4..31 chars'
     t = re.sub(r'[a-z0-9\-\.\_]', '', username)
     if t != '':
         return 'Username: letters, digits, dash, dot and underscore'

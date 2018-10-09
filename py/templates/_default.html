@@ -67,7 +67,9 @@
     <script src="{{ url_for('static', filename = 'js/jq.js') }}"></script>
     <script src="{{ url_for('static', filename = 'js/bs.js') }}"></script>
     <script src="{{ url_for('static', filename = 'js/main.js') }}"></script>
-
+    {% block more_scripts %}
+    {% endblock %}
+    
   </body>
 
 </html>

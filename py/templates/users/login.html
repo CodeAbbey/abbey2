@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-lg-6 col-sm-12 offset-lg-3 text-center">
     <h1>Welcome, Friend!</h1>
-    <form action="{{ url_for('users.login_form') }}" method="POST">
+    <form id="login-form" class="needs-validation" action="{{ url_for('users.login_form') }}" method="POST">
       <div class="form-group">
         <input type="text" name="username" class="form-control" placeholder="your username">
       </div>
@@ -14,6 +14,7 @@
         <input type="password" name="password" class="form-control" placeholder="password">
       </div>
       <button type="submit" class="btn btn-primary">Log in</button>
+      <div id="error-login" class="invalid-feedback"></div>
       <br/><hr/><br/>
       <h3>first time here?</h3>
       <p>fill in these additional fields to register</p>
@@ -24,8 +25,61 @@
         <input type="email" name="email" class="form-control" placeholder="email">
       </div>
       <button type="submit" class="btn">Register</button>
+      <div id="error-register" class="invalid-feedback"></div>
     </form>
   </div>
 </div>
+{% endblock %}
+
+{% block more_scripts %}
+<script>
+$(function() {
+    var form = $('#login-form');
+    
+    form.submit(function(e) {
+        if (!usernameIsValid() || !passwordIsValid() || !emailIsValid()) {
+            console.log('preventing');
+            e.preventDefault();
+        }
+        form.addClass('was-validated');
+    });
+    
+    $('input').change(function(event) {
+        event.target.setCustomValidity('');
+    });
+    
+    function usernameIsValid() {
+        var usernameInput = $('input[name=username]');
+        var username = usernameInput.val();
+        var error = '';
+        if (username.length < 4) {
+            error = 'Username too short';
+        } else if (username.length > 32) {
+            error = 'Username too long';
+        } else if (!/[a-z0-9\.\-\_]+/.test(username)) {
+            error = 'Username may contain letters, digits, dots, dashes and underscore';
+        }
+        showError($('#error-login'), error);
+        usernameInput.get(0).setCustomValidity(error);
+        return error === '';
+    }
+    
+    function passwordIsValid() {
+        return true;
+    }
+    
+    function emailIsValid() {
+        return true;
+    }
+    
+    function showError(field, error) {
+        if (error !== '') {
+            field.show().text(error);
+        } else {
+            field.hide();
+        }
+    }
+});
+</script>
 {% endblock %}
 
