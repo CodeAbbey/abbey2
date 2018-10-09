@@ -1,0 +1,42 @@
+License
+
+(c) 2018 Rodion Gorkovenko
+
+Terms and conditions for use, reproduction and distribution
+of the materials in this repository.
+
+1. Not "Open-Source"
+
+This project is not "Open-Source" in OSI definition.
+It is rather "Source-Available", at least for now.
+
+2. Allowed to study
+
+This project is made public mainly for educational purposes.
+So everyone is allowed to:
+- study these sources
+- propose changes and improvements via PR's
+- run it on private machine or in the closed networks.
+
+3. Prohibitions
+
+What is not allowed:
+- reusing this project targeting unlimited audience
+    without consent of its original contributors (such exceptions
+    should be documented here) - e.g. to build other educational servers;
+- using this project for any harmful purpose.
+- everything which is not explicitly allowed by this license note (feel free
+    to request modifications of license in such cases).
+
+(The restriction on reusing don't meet the definition of OpenSource Initiative)
+
+4. Rationale
+
+Why it is so? This project is not professional product, and its contributors are not
+expected to be experts. So it (or its derivatives) may lack certain security features
+or have some flaws leading to inconvenience for end-users.
+
+We do not provide any warranty, but even more - we don't want feel any kind of "moral"
+responsibility for any problems or complications arising from the misuse of this software.
+
+(again, if personal exception is needed, request may be submitted)
