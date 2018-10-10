@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-lg-6 col-sm-12 offset-lg-3 text-center">
     <h1>Welcome, Friend!</h1>
-    <form id="login-form" class="needs-validation" action="{{ url_for('users.login_form') }}" method="POST">
+    <form id="login-form" action="{{ url_for('users.login_form') }}" method="POST">
       <div class="form-group">
         <input type="text" name="username" class="form-control" placeholder="your username">
       </div>
@@ -15,6 +15,7 @@
       </div>
       <button type="submit" class="btn btn-primary">Log in</button>
       <div id="error-login" class="invalid-feedback"></div>
+      <div id="error-password" class="invalid-feedback"></div>
       <br/><hr/><br/>
       <h3>first time here?</h3>
       <p>fill in these additional fields to register</p>
@@ -25,7 +26,8 @@
         <input type="email" name="email" class="form-control" placeholder="email">
       </div>
       <button type="submit" class="btn">Register</button>
-      <div id="error-register" class="invalid-feedback"></div>
+      <div id="error-password2" class="invalid-feedback"></div>
+      <div id="error-email" class="invalid-feedback"></div>
     </form>
   </div>
 </div>
@@ -37,7 +39,10 @@ $(function() {
     var form = $('#login-form');
     
     form.submit(function(e) {
-        if (!usernameIsValid() || !passwordIsValid() || !emailIsValid()) {
+        var check1 = !usernameIsValid();
+        var check2 = !passwordIsValid();
+        var check = check1 || check2 || !registerIsValid();
+        if (check) {
             console.log('preventing');
             e.preventDefault();
         }
@@ -65,10 +70,50 @@ $(function() {
     }
     
     function passwordIsValid() {
-        return true;
+        var passwordInput = $('input[name=password]');
+        var password = passwordInput.val();
+        var error = '';
+        var pass_pattern = /(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+|~=`{}\[\]:";'<>?,./-]).{7,}$/;
+        if (password.length < 7) {
+            error = 'Password must be at minimum 7 characters';
+        } else if (!pass_pattern.test(password)){
+            error = 'Password must contain letters, digits and some punctuation';
+        }
+        showError($('#error-password'), error);
+        passwordInput.get(0).setCustomValidity(error);
+        return error === '';
+    }
+
+    function password2IsValid(password2Input){
+        var password = $('input[name=password]').val();
+        var password2 = password2Input.val();
+        var error = '';
+        if(password !== password2){
+            error = 'Repeat password must match password';
+        }
+        showError($('#error-password2'), error);
+        password2Input.get(0).setCustomValidity(error);
+        return error === '';
     }
     
-    function emailIsValid() {
+    function emailIsValid(emailInput) {
+        var email = emailInput.val();
+        var mail_pattern=/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
+        var error = '';
+        if(!mail_pattern.test(email)){
+            error = 'Email must conform to email format';
+        }
+        showError($('#error-email'), error);
+        emailInput.get(0).setCustomValidity(error);
+        return error === '';
+    }
+
+    function registerIsValid(){
+        var password2Input = $('input[name=password2]');
+        var emailInput = $('input[name=email]');
+        if(password2Input.val().length > 0 || emailInput.val().length > 0){
+            return password2IsValid(password2Input) && emailIsValid(emailInput)
+        }
         return true;
     }
     
