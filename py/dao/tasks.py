@@ -21,6 +21,12 @@ def load_checker(id):
         'blobs', "id=concat('t.', %s, '.chk')", (id,), 'val')
     return res[0] if res is not None else None
 
+
+def what_user_tried(username):
+    return dao.utils.query_many(
+        'usertask', 'username=%s', (username,), 'taskid,solved,ts')
+
+
 def update_usertask_record(userid, taskid, result):
     res_exists = dao.utils.query_one(
         'usertask', 'username=%s and taskid=%s', (userid, taskid), 'solved')

@@ -8,6 +8,11 @@
     <h1>Your dashboard, {{ username }}</h1>
     <p>Go to <a href="{{ url_for('tasks.task_list') }}">Task list</a></p>
     <p>got tired? <a href="{{ url_for('users.logout') }}">Log out</a></p>
+    <div>Tasks tried:
+        {% for item in tasks %}
+            <a href="{{ url_for('tasks.task_view', id=item[0]) }}"
+                class="{{ 'red' if item[1] == 0 else 'green' }}">{{ item[0] }}</a>
+        {% endfor %}
   </div>
 </div>
 {% endblock %}

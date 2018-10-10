@@ -25,9 +25,18 @@ def query_list(table, fields='*'):
 
 
 def query_one(table, clause, params, fields='*'):
-    # todo: improve with parameterized query
     cur = db_conn().cursor(buffered=True)
-    cur.execute('select ' + fields + ' from ' + table + ' where ' + clause, params)
+    cur.execute(
+        'select ' + fields + ' from ' + table + ' where ' + clause, params)
     res = cur.fetchone()
+    cur.close()
+    return res
+
+
+def query_many(table, clause, params, fields='*'):
+    cur = db_conn().cursor(buffered=True)
+    cur.execute(
+        'select ' + fields + ' from ' + table + ' where ' + clause, params)
+    res = cur.fetchall()
     cur.close()
     return res

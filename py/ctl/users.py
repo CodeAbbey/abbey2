@@ -4,6 +4,7 @@ import functools
 import flask
 import re
 
+import dao.tasks
 import dao.utils
 import dao.users
 
@@ -88,8 +89,10 @@ def login_success(username):
 @users_ctl.route('/dash')
 @login_required
 def dashboard():
+    username = flask.session['username']
+    tasks = dao.tasks.what_user_tried(username)
     return flask.render_template(
-        'users/dashboard.html', username=flask.session['username'])
+        'users/dashboard.html', username=username, tasks=tasks)
 
 
 @users_ctl.route('/logout')
