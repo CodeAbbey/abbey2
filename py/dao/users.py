@@ -2,12 +2,13 @@ import dao.utils
 
 
 def find_with_creds(user, pwd=None):
-    where = "username='" + user
     if pwd is not None:
-        where += "' and passwd='" + pwd + "'"
+        where = 'username=%s and passwd=%s'
+        params = (user, pwd)
     else:
-        where += "'"
-    res = dao.utils.query_one('users', where, 'id')
+        where = 'username=%s'
+        params = (user,)
+    res = dao.utils.query_one('users', where, params, 'username')
     if res is None:
         return None
     (uid,) = res

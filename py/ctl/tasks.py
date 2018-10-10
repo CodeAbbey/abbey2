@@ -34,6 +34,7 @@ def load_test_stuff(id):
     local_vars = {}
     exec(checker_code, {}, local_vars)
     flask.session['expected-answer'] = local_vars['expected_answer']
+    flask.session['last-seen-task'] = id
     return local_vars['input_data']
 
 
@@ -46,4 +47,7 @@ def task_check():
     result['expected'] = flask.session['expected-answer']
     result['answer'] = flask.request.form['answer']
     result['status'] = (result['expected'] == result['answer'])
+    dao.tasks.update_usertask_record(
+        flask.session['username'], flask.session['last-seen-task'],
+        result['status'])
     return flask.render_template('tasks/check.html', result=result)
