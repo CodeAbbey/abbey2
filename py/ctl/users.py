@@ -51,9 +51,9 @@ def check_creds_format_error(username, password):
         return 'Username: letters, digits, dash, dot and underscore'
     if len(password) < 7:
         return 'Please create password at least 7 chars'
-    t = re.sub(r'[a-z0-9\-\.\!\@\#\$\%\^\&\*\(\)\_]+', '', password)
+    t = re.sub(r'[A-Za-z0-9\-\.\!\@\#\$\%\^\&\*\(\)\_]+', '', password)
     if t != '':
-        return 'Password: letters, digits and some punctuation'
+        return 'Password allows letters, digits and some punctuation'
     return None
 
 

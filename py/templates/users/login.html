@@ -15,7 +15,6 @@
       </div>
       <button type="submit" class="btn btn-primary">Log in</button>
       <div id="error-login" class="invalid-feedback"></div>
-      <div id="error-password" class="invalid-feedback"></div>
       <br/><hr/><br/>
       <h3>first time here?</h3>
       <p>fill in these additional fields to register</p>
@@ -26,8 +25,7 @@
         <input type="email" name="email" class="form-control" placeholder="email">
       </div>
       <button type="submit" class="btn">Register</button>
-      <div id="error-password2" class="invalid-feedback"></div>
-      <div id="error-email" class="invalid-feedback"></div>
+      <div id="error-register" class="invalid-feedback"></div>
     </form>
   </div>
 </div>
@@ -39,10 +37,7 @@ $(function() {
     var form = $('#login-form');
     
     form.submit(function(e) {
-        var check1 = !usernameIsValid();
-        var check2 = !passwordIsValid();
-        var check = check1 || check2 || !registerIsValid();
-        if (check) {
+        if (!usernameIsValid() || !passwordIsValid() || !registerIsValid()) {
             console.log('preventing');
             e.preventDefault();
         }
@@ -73,13 +68,13 @@ $(function() {
         var passwordInput = $('input[name=password]');
         var password = passwordInput.val();
         var error = '';
-        var pass_pattern = /(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+|~=`{}\[\]:";'<>?,./-]).{7,}$/;
+        var passPattern = /^[A-Za-z0-9\-\.\!\@\#\$\%\^\&\*\(\)\_]+$/;
         if (password.length < 7) {
             error = 'Password must be at minimum 7 characters';
-        } else if (!pass_pattern.test(password)){
-            error = 'Password must contain letters, digits and some punctuation';
+        } else if (!passPattern.test(password)){
+            error = 'Password may contain letters, digits and some punctuation';
         }
-        showError($('#error-password'), error);
+        showError($('#error-login'), error);
         passwordInput.get(0).setCustomValidity(error);
         return error === '';
     }
@@ -91,19 +86,19 @@ $(function() {
         if(password !== password2){
             error = 'Repeat password must match password';
         }
-        showError($('#error-password2'), error);
+        showError($('#error-register'), error);
         password2Input.get(0).setCustomValidity(error);
         return error === '';
     }
     
     function emailIsValid(emailInput) {
         var email = emailInput.val();
-        var mail_pattern=/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
+        var mail_pattern=/^\S+\@\S+\.\S+$/;
         var error = '';
         if(!mail_pattern.test(email)){
-            error = 'Email must conform to email format';
+            error = 'Email probably is malformed';
         }
-        showError($('#error-email'), error);
+        showError($('#error-register'), error);
         emailInput.get(0).setCustomValidity(error);
         return error === '';
     }
