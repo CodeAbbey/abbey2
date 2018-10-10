@@ -1,0 +1,17 @@
+{% extends "_default.html" %}
+
+{% block title %}User {{ username }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <h1>User {{ username }}</h1>
+    <div>Tasks tried:
+        {% for item in tasks %}
+            <a href="{{ url_for('tasks.task_view', id=item[0]) }}"
+                class="{{ 'red' if item[1] == 0 else 'green' }}">{{ item[0] }}</a>
+        {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

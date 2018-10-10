@@ -95,6 +95,17 @@ def dashboard():
         'users/dashboard.html', username=username, tasks=tasks)
 
 
+@users_ctl.route('/profile/<username>')
+def profile(username):
+    uid = dao.users.find_with_creds(username)
+    if uid is None:
+        flask.abort(404)
+        return
+    tasks = dao.tasks.what_user_tried(username)
+    return flask.render_template(
+        'users/profile.html', username=username, tasks=tasks)
+
+
 @users_ctl.route('/logout')
 def logout():
     flask.session.clear()
@@ -103,8 +114,5 @@ def logout():
 
 @users_ctl.route('/ranking')
 def ranking():
-    cur = dao.utils.db_conn().cursor()
-    cur.execute('select count(*) from users')
-    (count,) = cur.fetchone()
-    cur.close()
-    return flask.render_template('users/ranking.html', user_count=count)
+    users = dao.utils.query_list('users', 'username')
+    return flask.render_template('users/ranking.html', users=users)

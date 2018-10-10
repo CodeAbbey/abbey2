@@ -7,7 +7,11 @@
   <div class="col-lg-12 text-center">
     <h1>Ranking and Stats</h1>
     <p class="lead">Under construction...</p>
-    <p class="green">Total users: {{ user_count }}</p>
+    <div>Total users: {{ users|length }}<br/>
+        {% for user in users %}
+            <a href="{{ url_for('users.profile', username=user[0]) }}">{{ user[0] }}</a><br/>
+        {% endfor %}
+    </div>
   </div>
 </div>
 {% endblock %}
