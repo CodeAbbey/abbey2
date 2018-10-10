@@ -18,10 +18,15 @@ def db_close():
 
 def query_list(table, fields='*'):
     cur = db_conn().cursor(buffered=True)
-    cur.execute('select ' + fields + ' from ' + table)
-    res = cur.fetchall()
-    cur.close()
-    return res
+    try:
+        cur.execute('select ' + fields + ' from ' + table)
+        res = cur.fetchall()
+        return res
+    except mysql.Error as err:
+        print("query_list error: {}".format(err))
+        return []
+    finally:
+        cur.close()
 
 
 def query_one(table, clause, params, fields='*'):
