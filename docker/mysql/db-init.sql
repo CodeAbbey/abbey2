@@ -21,6 +21,8 @@ create table usertask(
     ts timestamp default current_timestamp,
     index (userid), index(taskid));
 
+create table srvsession (userid int primary key, val text);
+
 insert into tasks values ('prg-1', 'Sum of Two');
 insert into blobs values('t.prg-1.en', 'You are given two **integer** values and need to tell their sum...');
 insert into blobs values('t.prg-1.chk', x'696d706f72742072616e646f6d0a0a61203d2072616e646f6d2e72616e64696e7428333030302c203136303030290a62203d2072616e646f6d2e72616e64696e7428333030302c203136303030290a0a696e7075745f64617461203d202225732025732220252028612c2062290a65787065637465645f616e73776572203d207374722861202b2062290a0a');

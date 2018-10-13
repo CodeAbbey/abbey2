@@ -21,19 +21,24 @@ def task_view(id):
     (title, text) = task_data
     renderer = mistune.Renderer(escape=False)
     markdown = mistune.Markdown(renderer=renderer)
-    test = load_test_stuff(id_clean)
+    if 'username' in flask.session:
+        test = load_test_stuff(id_clean, flask.session['userid'])
+    else:
+        test = None
     data = {'title': title, 'text': markdown(text), 'test': test}
     return flask.render_template('tasks/view.html', data=data)
 
 
-def load_test_stuff(id):
-    checker_code = dao.tasks.load_checker(id)
+def load_test_stuff(taskid, userid):
+    checker_code = dao.tasks.load_checker(taskid)
     if checker_code is None:
         return None
     local_vars = {}
     exec(checker_code, {}, local_vars)
-    flask.session['expected-answer'] = local_vars['expected_answer']
-    flask.session['last-seen-task'] = id
+    srvsess = dao.users.fetch_srvsession(userid)
+    srvsess['expected'] = local_vars['expected_answer']
+    srvsess['curtask'] = taskid
+    dao.users.update_srvsession(userid, srvsess)
     return local_vars['input_data']
 
 
@@ -42,11 +47,17 @@ def task_check():
     form = flask.request.form
     if ('answer' not in form) or ('username' not in flask.session):
         return 'Oooops!'
+    userid = flask.session['userid']
+    srvsess = dao.users.fetch_srvsession(userid)
+    if ('expected' not in srvsess) or ('curtask' not in srvsess):
+        return 'Perhaps, cheating attempt? :)'
+    taskid = srvsess['curtask']
     result = {}
-    result['expected'] = flask.session['expected-answer']
+    result['expected'] = srvsess['expected']
     result['answer'] = flask.request.form['answer']
     result['status'] = (result['expected'] == result['answer'])
+    del srvsess['expected'], srvsess['curtask']
+    dao.users.update_srvsession(userid, srvsess)
     dao.tasks.update_usertask_record(
-        flask.session['userid'], flask.session['last-seen-task'],
-        result['status'])
+        flask.session['userid'], taskid, result['status'])
     return flask.render_template('tasks/check.html', result=result)

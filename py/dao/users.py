@@ -1,3 +1,5 @@
+import json
+
 import dao.utils
 
 
@@ -23,3 +25,20 @@ def insert(user, password, email):
         (user, password, email))
     cn.commit()
     cur.close()
+
+
+def update_srvsession(userid, value):
+    cn = dao.utils.db_conn()
+    cur = cn.cursor()
+    value = json.dumps(value)
+    cur.execute(
+        'insert into srvsession (userid, val) values (%s, %s)'
+        + ' on duplicate key update val=%s',
+        (userid, value, value))
+    cn.commit()
+    cur.close()
+
+
+def fetch_srvsession(userid):
+    res = dao.utils.query_one('srvsession', 'userid=%s', (userid,), 'val')
+    return {} if res is None else json.loads(res[0])
