@@ -77,6 +77,7 @@ def attempt_register(username, password, email):
         flask.flash('Username is already registered!')
         return flask.redirect(flask.url_for('users.login_form'))
     dao.users.insert(username, password, email)
+    uid = dao.users.find_with_creds(username)
     return login_success(username, uid)
 
 
