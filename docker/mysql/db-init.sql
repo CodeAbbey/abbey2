@@ -2,18 +2,24 @@ create database abbey;
 
 use abbey;
 
-create table users(username varchar(32) primary key, passwd varchar(32), email varchar(64), realname varchar(32));
+create table users(
+    id int primary key auto_increment,
+    username varchar(32),
+    passwd varchar(32),
+    email varchar(64),
+    realname varchar(32),
+    index (username));
 
 create table tasks(id varchar(16) primary key, title varchar(64));
 
 create table blobs(id varchar(32) primary key, val blob);
 
 create table usertask(
-    username varchar(32),
+    userid int(32),
     taskid varchar(16),
     solved int default 0,
     ts timestamp default current_timestamp,
-    index (username), index(taskid));
+    index (userid), index(taskid));
 
 insert into tasks values ('prg-1', 'Sum of Two');
 insert into blobs values('t.prg-1.en', 'You are given two **integer** values and need to tell their sum...');

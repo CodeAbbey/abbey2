@@ -68,7 +68,7 @@ def attempt_login(username, password):
     if uid is None:
         flask.flash('Wrong Username or Password!')
         return flask.redirect(flask.url_for('users.login_form'))
-    return login_success(username)
+    return login_success(username, uid)
 
 
 def attempt_register(username, password, email):
@@ -77,11 +77,12 @@ def attempt_register(username, password, email):
         flask.flash('Username is already registered!')
         return flask.redirect(flask.url_for('users.login_form'))
     dao.users.insert(username, password, email)
-    return login_success(username)
+    return login_success(username, uid)
 
 
-def login_success(username):
+def login_success(username, uid):
     flask.session['username'] = username
+    flask.session['userid'] = uid
     flask.flash('Greetings, Mortal!')
     return flask.redirect(flask.url_for('users.dashboard'))
 
@@ -89,10 +90,11 @@ def login_success(username):
 @users_ctl.route('/dash')
 @login_required
 def dashboard():
-    username = flask.session['username']
-    tasks = dao.tasks.what_user_tried(username)
+    tasks = dao.tasks.what_user_tried(flask.session['userid'])
     return flask.render_template(
-        'users/dashboard.html', username=username, tasks=tasks)
+        'users/dashboard.html',
+        username=flask.session['username'],
+        tasks=tasks)
 
 
 @users_ctl.route('/profile/<username>')
@@ -100,8 +102,8 @@ def profile(username):
     uid = dao.users.find_with_creds(username)
     if uid is None:
         flask.abort(404)
-        return
-    tasks = dao.tasks.what_user_tried(username)
+    print('user found: ' + str(uid))
+    tasks = dao.tasks.what_user_tried(uid)
     return flask.render_template(
         'users/profile.html', username=username, tasks=tasks)
 

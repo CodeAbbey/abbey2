@@ -47,6 +47,6 @@ def task_check():
     result['answer'] = flask.request.form['answer']
     result['status'] = (result['expected'] == result['answer'])
     dao.tasks.update_usertask_record(
-        flask.session['username'], flask.session['last-seen-task'],
+        flask.session['userid'], flask.session['last-seen-task'],
         result['status'])
     return flask.render_template('tasks/check.html', result=result)

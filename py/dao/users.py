@@ -8,7 +8,7 @@ def find_with_creds(user, pwd=None):
     else:
         where = 'username=%s'
         params = (user,)
-    res = dao.utils.query_one('users', where, params, 'username')
+    res = dao.utils.query_one('users', where, params, 'id')
     if res is None:
         return None
     (uid,) = res
