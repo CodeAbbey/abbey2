@@ -23,6 +23,8 @@ with all stuff installed - and you need not spoil your system configuration.
 - pressing `Ctrl-C` (in this docker console) will stop the server
 - to stop the database server, use `./docker/mysql-stop.sh
 - to check python code use `./docker/py-check.sh`
+    and also `./docker/py-test.sh` to run unittests (both need to pass for
+    any change to be accepted)
 
 The first steps (building images) need only be done once (unless the image is manually removed later).
 
