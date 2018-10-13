@@ -18,7 +18,6 @@ def task_view(id):
     task_data = dao.tasks.load_one(id_clean)
     if task_data is None:
         flask.abort(404)
-        return
     (title, text) = task_data
     renderer = mistune.Renderer(escape=False)
     markdown = mistune.Markdown(renderer=renderer)
