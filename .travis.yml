@@ -7,3 +7,4 @@ install:
 # command to run tests
 script:
   - flake8 py
+  - cd py; python -m unittest
