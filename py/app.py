@@ -4,6 +4,7 @@ import flask
 from ctl.tasks import tasks_ctl
 from ctl.users import users_ctl
 import dao.utils
+import utils.web
 
 
 app = flask.Flask(__name__, static_url_path='/s')
@@ -20,6 +21,10 @@ def main_page():
 def page_not_found(e):
     return flask.render_template('404.html'), 404
 
+
+@app.after_request
+def after_all_requests(resp):
+    return utils.web.no_cache(resp)
 
 @app.teardown_appcontext
 def teardown(error):

@@ -1,24 +1,14 @@
 import base64
 import hashlib
-import functools
 import flask
 import re
 
 import dao.tasks
 import dao.utils
 import dao.users
+import utils.web
 
 users_ctl = flask.Blueprint('users', __name__)
-
-
-def login_required(f):
-    @functools.wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'username' not in flask.session:
-            return flask.redirect(
-                flask.url_for('login_page', next=flask.request.url))
-        return f(*args, **kwargs)
-    return decorated_function
 
 
 @users_ctl.route('/login', methods=['GET'])
@@ -89,7 +79,7 @@ def login_success(username, uid):
 
 
 @users_ctl.route('/dash')
-@login_required
+@utils.web.login_required
 def dashboard():
     tasks = dao.tasks.what_user_tried(flask.session['userid'])
     return flask.render_template(
