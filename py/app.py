@@ -26,6 +26,7 @@ def page_not_found(e):
 def after_all_requests(resp):
     return utils.web.no_cache(resp)
 
+
 @app.teardown_appcontext
 def teardown(error):
     dao.utils.db_close()

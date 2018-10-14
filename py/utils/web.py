@@ -13,9 +13,10 @@ def login_required(f):
 
 
 def no_cache(resp):
-    resp.headers.set(
-        'Cache-Control',
-        'no-store, no-cache, must-revalidate, post-check=0, pre-check=0')
-    resp.headers.set('Expires', 'Fri, 20 Nov 1981 08:52:00 GMT')
-    resp.headers.set('Pragma', 'no-cache')
+    if flask.request.endpoint not in ('static'):
+        resp.headers.set(
+            'Cache-Control',
+            'no-store, no-cache, must-revalidate, post-check=0, pre-check=0')
+        resp.headers.set('Expires', 'Fri, 20 Nov 1981 08:52:00 GMT')
+        resp.headers.set('Pragma', 'no-cache')
     return resp
