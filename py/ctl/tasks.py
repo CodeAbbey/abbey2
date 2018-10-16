@@ -2,6 +2,7 @@ import flask
 import mistune
 
 import dao.tasks
+import utils.check
 
 tasks_ctl = flask.Blueprint('tasks', __name__, url_prefix='/tasks')
 
@@ -33,8 +34,7 @@ def load_test_stuff(taskid, userid):
     checker_code = dao.tasks.load_checker(taskid)
     if checker_code is None:
         return None
-    local_vars = {}
-    exec(checker_code, {}, local_vars)
+    local_vars = utils.check.checker_exec(checker_code)
     srvsess = dao.users.fetch_srvsession(userid)
     srvsess['expected'] = local_vars['expected_answer']
     srvsess['curtask'] = taskid
