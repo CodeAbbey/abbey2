@@ -19,8 +19,14 @@ def checker_exec(checker_code):
         res['input_data'] = base64.b64decode(res['input_data']).decode('utf-8')
         res['expected_answer'] = \
             base64.b64decode(res['expected_answer']).decode('utf-8')
-        return res
+        return make_plain(res)
     else:
         local_vars = {}
         exec(checker_code, {}, local_vars)
-        return local_vars
+        return make_plain(local_vars)
+
+
+def make_plain(data):
+    return {
+        'input': ['plain', data['input_data']],
+        'answer': ['plain', data['expected_answer']]}

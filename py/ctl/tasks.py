@@ -26,20 +26,20 @@ def task_view(id):
         test = load_test_stuff(id_clean, flask.session['userid'])
     else:
         test = None
-    data = {'title': title, 'text': markdown(text), 'test': test}
-    return flask.render_template('tasks/view.html', data=data)
+    data = {'title': title, 'text': markdown(text)}
+    return flask.render_template('tasks/view.html', data=data, test=test)
 
 
 def load_test_stuff(taskid, userid):
     checker_code = dao.tasks.load_checker(taskid)
     if checker_code is None:
         return None
-    local_vars = utils.check.checker_exec(checker_code)
+    checker_data = utils.check.checker_exec(checker_code)
     srvsess = dao.users.fetch_srvsession(userid)
-    srvsess['expected'] = local_vars['expected_answer']
+    srvsess['expected'] = checker_data['answer']
     srvsess['curtask'] = taskid
     dao.users.update_srvsession(userid, srvsess)
-    return local_vars['input_data']
+    return checker_data['input']
 
 
 @tasks_ctl.route('/check', methods=['POST'])
@@ -52,12 +52,19 @@ def task_check():
     if ('expected' not in srvsess) or ('curtask' not in srvsess):
         return 'Perhaps, cheating attempt? :)'
     taskid = srvsess['curtask']
-    result = {}
-    result['expected'] = srvsess['expected']
-    result['answer'] = flask.request.form['answer']
-    result['status'] = (result['expected'] == result['answer'])
+    expected = srvsess['expected']
+    answer = flask.request.form['answer']
     del srvsess['expected'], srvsess['curtask']
     dao.users.update_srvsession(userid, srvsess)
+    result = process_submission(taskid, expected, answer)
+    return flask.render_template('tasks/check.html', result=result)
+
+def process_submission(taskid, expected, answer):
+    result = {}
+    if expected[0] == 'plain':
+        result['status'] = (expected[1] == answer)
+        result['expected'] = expected[1]
+        result['answer'] = answer
     dao.tasks.update_usertask_record(
         flask.session['userid'], taskid, result['status'])
-    return flask.render_template('tasks/check.html', result=result)
+    return result
