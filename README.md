@@ -8,7 +8,10 @@
 
 **[Information for contributors](https://github.com/CodeAbbey/abbey2/wiki)**
 
-To work with project locally, one needs `Python 3.7` with certain libraries and `MySQL 5.7`.  
+To work with project locally, one needs `Python 3.7` with certain libraries and `MySQL 5.7`.
+
+_This is not strictly necessary for contributing into project, but convenient for working on functional changes and improvements. Small fixes (e.g. design and spelling) could be proposed directly at GitHub._
+
 The **recommended way** to setup this is by using `docker`. It creates small "virtual machines" (called "containers")
 with all stuff installed - and you need not spoil your system configuration.
 
