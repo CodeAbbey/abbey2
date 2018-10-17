@@ -26,6 +26,15 @@
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    {% elif test[0] == 'quiz' %}
+      {% for q in test[1] %}
+      <div>{{ q['q'] }}
+        {% for a in q['items'] %}
+          <br/>
+          - {{ a }}
+        {% endfor %}
+      </div>
+      {% endfor %}
     {% else %}
     <span class="green">Checker of unknown type... strange... :)</span>
     {% endif %}

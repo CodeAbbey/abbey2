@@ -59,6 +59,7 @@ def task_check():
     result = process_submission(taskid, expected, answer)
     return flask.render_template('tasks/check.html', result=result)
 
+
 def process_submission(taskid, expected, answer):
     result = {}
     if expected[0] == 'plain':

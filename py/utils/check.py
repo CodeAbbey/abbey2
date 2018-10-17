@@ -23,10 +23,19 @@ def checker_exec(checker_code):
     else:
         local_vars = {}
         exec(checker_code, {}, local_vars)
-        return make_plain(local_vars)
+        if 'check_type' not in local_vars:
+            return make_plain(local_vars)
+        elif local_vars['check_type'] == 'quiz':
+            return make_quiz(local_vars)
 
 
 def make_plain(data):
     return {
         'input': ['plain', data['input_data']],
         'answer': ['plain', data['expected_answer']]}
+
+
+def make_quiz(data):
+    return {
+        'input': ['quiz', data['input_data']],
+        'answer': ['quiz', data['expected_answer']]}
