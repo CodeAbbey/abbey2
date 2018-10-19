@@ -2,6 +2,7 @@ import urllib.request as request
 import hashlib
 import json
 import base64
+import re
 import flask
 
 
@@ -36,6 +37,35 @@ def make_plain(data):
 
 
 def make_quiz(data):
+    input_data = data['input_data']
+    qi = 0
+    for q in input_data:
+        ai = 0
+        for a in q['items']:
+            q['items'][ai] = {'id': 'qz%s%s' % (qi, ai), 'text': a}
+            ai += 1
+        qi += 1
     return {
-        'input': ['quiz', data['input_data']],
+        'input': ['quiz', input_data],
         'answer': ['quiz', data['expected_answer']]}
+
+
+def answer_from_form(check_type, form):
+    if check_type == 'plain':
+        return form.get('answer', None)
+    elif check_type == 'quiz':
+        return quiz_results(form)
+    else:
+        return None
+
+
+def quiz_results(form):
+    res = []
+    print(str(form))
+    r = re.compile(r'qz\d{2}')
+    for key in form:
+        print('key: ' + key)
+        if r.fullmatch(key):
+            res.append(key[2:])
+    res.sort()
+    return ' '.join(res)

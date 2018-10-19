@@ -44,8 +44,7 @@ def load_test_stuff(taskid, userid):
 
 @tasks_ctl.route('/check', methods=['POST'])
 def task_check():
-    form = flask.request.form
-    if ('answer' not in form) or ('username' not in flask.session):
+    if 'username' not in flask.session:
         return 'Oooops!'
     userid = flask.session['userid']
     srvsess = dao.users.fetch_srvsession(userid)
@@ -53,17 +52,19 @@ def task_check():
         return 'Perhaps, cheating attempt? :)'
     taskid = srvsess['curtask']
     expected = srvsess['expected']
-    answer = flask.request.form['answer']
     del srvsess['expected'], srvsess['curtask']
     dao.users.update_srvsession(userid, srvsess)
+    answer = utils.check.answer_from_form(expected[0], flask.request.form)
+    if answer is None:
+        return 'Wooow!'
     result = process_submission(taskid, expected, answer)
     return flask.render_template('tasks/check.html', result=result)
 
 
 def process_submission(taskid, expected, answer):
     result = {}
+    result['status'] = (expected[1] == answer)
     if expected[0] == 'plain':
-        result['status'] = (expected[1] == answer)
         result['expected'] = expected[1]
         result['answer'] = answer
     dao.tasks.update_usertask_record(
