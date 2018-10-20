@@ -1,6 +1,7 @@
 import urllib.request as request
 import hashlib
 import json
+import random
 import base64
 import re
 import flask
@@ -45,6 +46,7 @@ def make_quiz(data):
             q['items'][ai] = {'id': 'qz%s%s' % (qi, ai), 'text': a}
             ai += 1
         qi += 1
+        random.shuffle(q['items'])
     return {
         'input': ['quiz', input_data],
         'answer': ['quiz', data['expected_answer']]}
@@ -64,8 +66,15 @@ def quiz_results(form):
     print(str(form))
     r = re.compile(r'qz\d{2}')
     for key in form:
-        print('key: ' + key)
         if r.fullmatch(key):
             res.append(key[2:])
     res.sort()
     return ' '.join(res)
+
+
+def quiz_wrong_percentage(expected, answer):
+    expected = set(expected.split(' '))
+    answer = set(answer.split(' '))
+    missed = len(expected.difference(answer))
+    extra = len(answer.difference(expected))
+    return (missed + extra) * 50 / len(expected)

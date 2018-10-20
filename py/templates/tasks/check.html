@@ -10,10 +10,14 @@
     <p class="green">Your answer is correct, congratulations!</p>
     {% else %}
     <p class="red">Your answer is wrong, sorry...</p>
-    <p>You replied with:</p>
-    <pre>{{ result.answer }}</pre>
-    <p>And expected was:</p>
-    <pre>{{ result.expected }}</pre>
+      {% if result.type == 'plain' %}
+      <p>You replied with:</p>
+      <pre>{{ result.answer }}</pre>
+      <p>And expected was:</p>
+      <pre>{{ result.expected }}</pre>
+      {% elif result.type == 'quiz' %}
+      <p>Hint: your answer is great but needs to be {{ result.hint }}% more correct to pass :)</p>
+      {% endif %}
     {% endif %}
   </div>
 </div>

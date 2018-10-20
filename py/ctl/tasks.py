@@ -62,11 +62,17 @@ def task_check():
 
 
 def process_submission(taskid, expected, answer):
+    task_type = expected[0]
+    expected = expected[1]
     result = {}
-    result['status'] = (expected[1] == answer)
-    if expected[0] == 'plain':
-        result['expected'] = expected[1]
+    result['type'] = task_type
+    result['status'] = (expected == answer)
+    if task_type == 'plain':
+        result['expected'] = expected
         result['answer'] = answer
+    elif task_type == 'quiz':
+        wrongs = utils.check.quiz_wrong_percentage(expected, answer)
+        result['hint'] = str(int(wrongs + 0.5))
     dao.tasks.update_usertask_record(
         flask.session['userid'], taskid, result['status'])
     return result

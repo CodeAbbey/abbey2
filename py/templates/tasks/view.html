@@ -26,7 +26,6 @@
         <input type="text" name="answer" class="form-control" placeholder="your answer here">
       </div>
       {% elif test[0] == 'quiz' %}
-      <div class="font-italic red">Items should be shuffled in future and some hint on the wrong answer provided</div>
       {% for q in test[1] %}
       <div>{{ q['q'] }}
         <ul>
