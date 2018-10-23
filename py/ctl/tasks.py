@@ -9,13 +9,15 @@ tasks_ctl = flask.Blueprint('tasks', __name__, url_prefix='/tasks')
 
 @tasks_ctl.route('/')
 def task_list():
-    info = dao.tasks.list_all()
-    return flask.render_template('tasks/list.html', data=info)
+    info = dao.tasks.list_categories()
+    return flask.render_template('tasks/list_cats.html', data=info)
 
 
 @tasks_ctl.route('/view/<id>')
 def task_view(id):
     id_clean = "".join([c.lower() for c in id if (c.isalnum() or c == '-')])
+    if '-' not in id_clean:
+        return task_category(id_clean)
     task_data = dao.tasks.load_one(id_clean)
     if task_data is None:
         flask.abort(404)
@@ -40,6 +42,14 @@ def load_test_stuff(taskid, userid):
     srvsess['curtask'] = taskid
     dao.users.update_srvsession(userid, srvsess)
     return checker_data['input']
+
+
+def task_category(id):
+    cat_name = dao.tasks.load_category(id)
+    if cat_name is None:
+        flask.abort(404)
+    info = dao.tasks.load_list(id)
+    return flask.render_template('tasks/list.html', cat=cat_name, data=info)
 
 
 @tasks_ctl.route('/check', methods=['POST'])

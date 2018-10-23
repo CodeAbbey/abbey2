@@ -1,8 +1,19 @@
 import dao.utils
 
 
-def list_all():
-    res = dao.utils.query_list('tasks')
+def list_categories():
+    res = dao.utils.query_many('tasks', "id like '!%%'", (), '*')
+    return {id[1:]: title for (id, title) in res}
+
+
+def load_category(cat_id):
+    cat_id = '!' + cat_id
+    res = dao.utils.query_one('tasks', 'id=%s', (cat_id,), 'title')
+    return None if res is None else res[0]
+
+
+def load_list(cat_id):
+    res = dao.utils.query_many('tasks', "id like %s", (cat_id + '-%',), '*')
     return {id: title for (id, title) in res}
 
 

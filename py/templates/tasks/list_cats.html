@@ -1,11 +1,11 @@
 {% extends "_default.html" %}
 
-{% block title %}Problem List {% endblock %}
+{% block title %}Problem Volumes{% endblock %}
 
 {% block content %}
 <div class="row">
   <div class="col-lg-12">
-    <h1>{{ cat }}</h1>
+    <h1>Problem Volumes</h1>
     {% for item in data %}
     <p><a href="{{ url_for('tasks.task_view', id = item) }}">{{ data[item] }}</a></p>
     {% endfor %}
