@@ -29,19 +29,23 @@ def query_list(table, fields='*'):
         cur.close()
 
 
-def query_one(table, clause, params, fields='*'):
+def query(table, clause, fields, grplim):
+    where = '' if clause is None else (' where ' + clause)
+    tail = '' if grplim is None else (' ' + grplim)
+    return 'select ' + fields + ' from ' + table + where + tail
+
+
+def query_one(table, clause, params, fields='*', grplim=None):
     cur = db_conn().cursor(buffered=True)
-    cur.execute(
-        'select ' + fields + ' from ' + table + ' where ' + clause, params)
+    cur.execute(query(table, clause, fields, grplim), params)
     res = cur.fetchone()
     cur.close()
     return res
 
 
-def query_many(table, clause, params, fields='*'):
+def query_many(table, clause, params, fields='*', grplim=None):
     cur = db_conn().cursor(buffered=True)
-    cur.execute(
-        'select ' + fields + ' from ' + table + ' where ' + clause, params)
+    cur.execute(query(table, clause, fields, grplim), params)
     res = cur.fetchall()
     cur.close()
     return res

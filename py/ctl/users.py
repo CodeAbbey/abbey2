@@ -68,13 +68,14 @@ def attempt_register(username, password, email):
         return flask.redirect(flask.url_for('users.login_form'))
     dao.users.insert(username, password, email)
     uid = dao.users.find_with_creds(username)
-    return login_success(username, uid)
+    return login_success(username, uid, True)
 
 
-def login_success(username, uid):
+def login_success(username, uid, newcomer=False):
     flask.session['username'] = username
     flask.session['userid'] = uid
     flask.flash('Greetings, Mortal!')
+    dao.users.action_log_write(uid, 'LOG', '' if not newcomer else 'new')
     return flask.redirect(flask.url_for('users.dashboard'))
 
 

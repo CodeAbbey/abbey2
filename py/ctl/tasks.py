@@ -76,13 +76,16 @@ def process_submission(taskid, expected, answer):
     expected = expected[1]
     result = {}
     result['type'] = task_type
-    result['status'] = (expected == answer)
+    solved = (expected == answer)
+    result['status'] = solved
     if task_type == 'plain':
         result['expected'] = expected
         result['answer'] = answer
     elif task_type == 'quiz':
         wrongs = utils.check.quiz_wrong_percentage(expected, answer)
         result['hint'] = str(int(wrongs + 0.5))
-    dao.tasks.update_usertask_record(
-        flask.session['userid'], taskid, result['status'])
+    userid = flask.session['userid']
+    dao.users.action_log_write(
+        userid, 'ATT', taskid + ' ' + ('ok' if solved else 'fail'))
+    dao.tasks.update_usertask_record(userid, taskid, solved)
     return result

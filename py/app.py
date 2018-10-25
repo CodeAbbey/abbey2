@@ -17,6 +17,12 @@ def main_page():
     return flask.render_template('index.html')
 
 
+@app.route('/mess')
+def action_log():
+    data = dao.users.action_log_recent(100)
+    return flask.render_template('mess.html', data=data)
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return flask.render_template('404.html'), 404

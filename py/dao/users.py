@@ -1,4 +1,5 @@
 import json
+import time
 
 import dao.utils
 
@@ -42,3 +43,23 @@ def update_srvsession(userid, value):
 def fetch_srvsession(userid):
     res = dao.utils.query_one('srvsession', 'userid=%s', (userid,), 'val')
     return {} if res is None else json.loads(res[0])
+
+
+def action_log_write(userid, action, txt):
+    timestamp = int(time.time())
+    cn = dao.utils.db_conn()
+    cur = cn.cursor()
+    cur.execute(
+        'insert into actionlog (ts,userid,action,txt) values (%s,%s,%s,%s)',
+        (timestamp, userid, action, txt))
+    cn.commit()
+    cur.close()
+
+
+def action_log_recent(limit):
+    return dao.utils.query_many(
+        'actionlog join users on userid=id',
+        None,
+        (limit,),
+        'ts, username, action, txt',
+        'order by ts desc limit %s')

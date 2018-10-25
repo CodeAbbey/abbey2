@@ -10,18 +10,31 @@ create table users(
     realname varchar(32),
     index (username));
 
-create table tasks(id varchar(16) primary key, title varchar(64));
+create table tasks(
+    id varchar(16) primary key,
+    title varchar(64));
 
-create table blobs(id varchar(32) primary key, val blob);
+create table blobs(
+    id varchar(32) primary key,
+    val blob);
 
 create table usertask(
-    userid int(32),
+    userid int,
     taskid varchar(16),
     solved int default 0,
     ts timestamp default current_timestamp,
     index (userid), index(taskid));
 
-create table srvsession (userid int primary key, val text);
+create table srvsession(
+    userid int primary key,
+    val text);
+
+create table actionlog(
+    ts int,
+    userid int,
+    action varchar(8),
+    txt varchar(32),
+    index (userid), index(ts));
 
 insert into tasks values('!prg', 'Programming Problems');
 insert into tasks values('!qz', 'Programming Quizes');
