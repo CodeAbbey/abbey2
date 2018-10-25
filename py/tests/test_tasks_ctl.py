@@ -12,7 +12,7 @@ class TasksViewTestCase(unittest.TestCase):
         with app.app_context():
             tasks_dao.load_one.return_value = None
             with self.assertRaises(HTTPException) as http_error:
-                ctl.tasks.task_view('')
+                ctl.tasks.task_view('none-1')
                 self.assertEqual(http_error.exception.code, 404)
 
 
