@@ -5,5 +5,6 @@
     "DB_NAME": "abbey",
     "PWD_SALT": "dummy-salt",
     "CHECKER_SERVER": "http://httpstat.us/404 dummy-salt",
+    "BLOB_SALT": "dummy-salt",
     "SECRET_KEY": null
 }

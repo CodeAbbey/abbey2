@@ -13,7 +13,8 @@ def login_required(f):
 
 
 def no_cache(resp):
-    if flask.request.endpoint not in ('static'):
+    endpoint = flask.request.endpoint
+    if (endpoint is not None) and (endpoint not in ('static')):
         resp.headers.set(
             'Cache-Control',
             'no-store, no-cache, must-revalidate, post-check=0, pre-check=0')

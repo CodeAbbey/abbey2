@@ -3,6 +3,7 @@ import json
 import flask
 from ctl.tasks import tasks_ctl
 from ctl.users import users_ctl
+from ctl.tools import tools_ctl
 import dao.utils
 import utils.web
 
@@ -10,17 +11,12 @@ import utils.web
 app = flask.Flask(__name__, static_url_path='/s')
 app.register_blueprint(tasks_ctl)
 app.register_blueprint(users_ctl)
+app.register_blueprint(tools_ctl)
 
 
 @app.route('/')
 def main_page():
     return flask.render_template('index.html')
-
-
-@app.route('/mess')
-def action_log():
-    data = dao.users.action_log_recent(100)
-    return flask.render_template('mess.html', data=data)
 
 
 @app.errorhandler(404)
