@@ -14,15 +14,14 @@ def action_log():
 
 
 @tools_ctl.route('/blobs/<id>', methods=['POST'])
-def blobs(id):
+def blob_store(id):
     body = flask.request.get_data(cache=False)
     verify = flask.request.headers.get('X-Hash', '')
-    salt = flask.current_app.config['BLOB_SALT'].encode('utf-8')
-    body_hash = hashlib.sha512(salt + body).hexdigest()
+    body_hash = blob_digest(body)
     if body_hash != verify:
-        return 'Not Found', 404
+        return 'Method Not Allowed\r\n', 405
     update_blob(id, body)
-    return 'Ok'
+    return 'Ok\r\n'
 
 
 def update_blob(id, body):
@@ -33,3 +32,18 @@ def update_blob(id, body):
     cur.execute(query, (id, body, body))
     cn.commit()
     cur.close()
+
+
+@tools_ctl.route('/blobs/<id>', methods=['GET'])
+def blob_view(id):
+    verify = flask.request.headers.get('X-Hash', '')
+    id_hash = blob_digest(id.encode('utf-8'))
+    if id_hash != verify:
+        return 'Method not Allowed\r\n', 405
+    body = dao.utils.query_one('blobs', 'id=%s', (id,), 'val')
+    return ':)\r\n' if body is None else body[0].decode('utf-8')
+
+
+def blob_digest(binary):
+    salt = flask.current_app.config['BLOB_SALT'].encode('utf-8')
+    return hashlib.sha512(salt + binary).hexdigest()
