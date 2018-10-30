@@ -96,8 +96,10 @@ def profile(username):
         flask.abort(404)
     print('user found: ' + str(uid))
     tasks = dao.tasks.what_user_tried(uid)
+    cats = dao.utils.query_many(
+        'userstats', 'userid=%s', (uid,), 'cat,cnt,cost')
     return flask.render_template(
-        'users/profile.html', username=username, tasks=tasks)
+        'users/profile.html', username=username, tasks=tasks, cats=cats)
 
 
 @users_ctl.route('/logout')
@@ -108,5 +110,7 @@ def logout():
 
 @users_ctl.route('/ranking')
 def ranking():
-    users = dao.utils.query_list('users', 'username')
+    users = dao.utils.query_many(
+        'users u join userstats s on u.id=s.userid', None, (),
+        'username,cat,cnt,cost', 'order by cost desc limit 100')
     return flask.render_template('users/ranking.html', users=users)

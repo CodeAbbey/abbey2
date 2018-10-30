@@ -6,10 +6,17 @@
 <div class="row">
   <div class="col-lg-12 text-center">
     <h1>User {{ username }}</h1>
-    <div>Tasks tried:
+    <hr/>
+    <div><strong>Points in categories:</strong><br/>
+        {% for item in cats %}
+            {{ item[0] }} - solved {{ item[1] }} tasks for {{ item[2] }} points<br/>
+        {% endfor %}
+    </div>
+    <hr/>
+    <div><strong>Tasks tried:</strong><br/>
         {% for item in tasks %}
             <a href="{{ url_for('tasks.task_view', id=item[0]) }}"
-                class="{{ 'red' if item[1] == 0 else 'green' }}">{{ item[0] }}</a>
+                class="{{ 'red' if item[1] == 0 else 'green' }}">{{ item[2] }}</a> ({{ item[3] }})<br/>
         {% endfor %}
   </div>
 </div>

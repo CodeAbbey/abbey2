@@ -35,7 +35,8 @@ def load_checker(id):
 
 def what_user_tried(userid):
     return dao.utils.query_many(
-        'usertask', 'userid=%s', (userid,), 'taskid,solved,ts')
+        'usertask join tasks on taskid=id', 'userid=%s', (userid,),
+        'taskid,solved,title,ts')
 
 
 def update_usertask_record(userid, taskid, result):

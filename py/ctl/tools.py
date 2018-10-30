@@ -47,3 +47,15 @@ def blob_view(id):
 def blob_digest(binary):
     salt = flask.current_app.config['BLOB_SALT'].encode('utf-8')
     return hashlib.sha512(salt + binary).hexdigest()
+
+
+@tools_ctl.route('/update_stats', methods=['GET'])
+def update_stats():
+    cn = dao.utils.db_conn()
+    cur = cn.cursor()
+    cur.execute('replace into taskstats select * from taskstats_v', ())
+    cn.commit()
+    cur.execute('replace into userstats select * from userstats_v', ())
+    cn.commit()
+    cur.close()
+    return 'ok'
