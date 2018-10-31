@@ -55,3 +55,12 @@
 </div>
 {% endblock %}
 
+{% block more_scripts %}
+<script>
+$(function() {
+    $.get("{{url_for('tasks.get_solution', taskid=data['id'], lang='other')}}", function(data) {
+        $('#solution').val(atob(data));
+    });
+});
+</script>
+{% endblock %}

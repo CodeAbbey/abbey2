@@ -30,7 +30,7 @@ def task_view(id):
         test = load_test_stuff(id_clean, flask.session['userid'])
     else:
         test = None
-    data = {'title': title, 'text': markdown(text)}
+    data = {'title': title, 'text': markdown(text), 'id': id}
     return flask.render_template('tasks/view.html', data=data, test=test)
 
 
@@ -96,3 +96,14 @@ def process_submission(taskid, expected, answer, solution):
         dao.users.update_userblob(
             'sol.%s.%s.other' % (taskid, userid), sol64)
     return result
+
+
+@tasks_ctl.route('/sol/<taskid>/<lang>')
+def get_solution(taskid, lang):
+    userid = flask.session.get('userid')
+    if userid is None:
+        return 'Too bad request', 400
+    key = 'sol.%s.%s.%s' % (taskid, userid, lang)
+    res = dao.utils.query_one('userblobs', 'id=%s', (key,), 'val')
+    sol = '' if res is None else res[0]
+    return (sol, {'Content-Type': 'text/plain'})
