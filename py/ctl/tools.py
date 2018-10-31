@@ -25,13 +25,7 @@ def blob_store(id):
 
 
 def update_blob(id, body):
-    cn = dao.utils.db_conn()
-    cur = cn.cursor()
-    query = 'insert into blobs (id, val) values (%s, %s)' \
-        + ' on duplicate key update val=%s'
-    cur.execute(query, (id, body, body))
-    cn.commit()
-    cur.close()
+    dao.utils.update_blob(id, body, 'blobs')
 
 
 @tools_ctl.route('/blobs/<id>', methods=['GET'])

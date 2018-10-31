@@ -20,10 +20,12 @@
     <form action="{{ url_for('tasks.task_check') }}" method="POST">
       {% if test[0] == 'plain' %}
       <div class="form-group">
-        <textarea name="inputdata" class="form-control" rows="10">{{ test[1] | safe }}</textarea>
+        <label for="inputdata">Input Data:</label>
+        <textarea id="inputdata" name="inputdata" class="form-control" rows="10">{{ test[1] | safe }}</textarea>
       </div>
       <div class="form-group">
-        <input type="text" name="answer" class="form-control" placeholder="your answer here">
+        <label for="answer">Your Answer:</label>
+        <input type="text" id="answer" name="answer" class="form-control" placeholder="your answer here">
       </div>
       {% elif test[0] == 'quiz' %}
       {% for q in test[1] %}
@@ -38,7 +40,15 @@
       {% else %}
       <span class="green">Checker of unknown type... strange... :)</span>
       {% endif %}
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      {% if test[0] == 'plain' %}
+      <div class="form-group">
+        <label for="solution">Please, post Your code here:</label>
+        <textarea id="solution" name="solution" class="form-control" rows="10"></textarea>
+      </div>
+      {% endif %}
     </form>
     {% endif %}
   </div>

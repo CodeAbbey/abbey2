@@ -18,6 +18,10 @@ create table blobs(
     id varchar(32) primary key,
     val blob);
 
+create table userblobs(
+    id varchar(32) primary key,
+    val blob);
+
 create table usertask(
     userid int,
     taskid varchar(16),

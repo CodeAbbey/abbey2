@@ -63,3 +63,7 @@ def action_log_recent(limit):
         (limit,),
         'ts, username, action, txt',
         'order by ts desc limit %s')
+
+
+def update_userblob(id, body):
+    dao.utils.update_blob(id, body, 'userblobs')

@@ -1,7 +1,9 @@
 import flask
 import mistune
+import base64
 
 import dao.tasks
+import dao.users
 import utils.check
 
 tasks_ctl = flask.Blueprint('tasks', __name__, url_prefix='/tasks')
@@ -67,11 +69,12 @@ def task_check():
     answer = utils.check.answer_from_form(expected[0], flask.request.form)
     if answer is None:
         return 'Wooow!'
-    result = process_submission(taskid, expected, answer)
+    solution = flask.request.form.get('solution', None)
+    result = process_submission(taskid, expected, answer, solution)
     return flask.render_template('tasks/check.html', result=result)
 
 
-def process_submission(taskid, expected, answer):
+def process_submission(taskid, expected, answer, solution):
     task_type = expected[0]
     expected = expected[1]
     result = {}
@@ -88,4 +91,8 @@ def process_submission(taskid, expected, answer):
     dao.users.action_log_write(
         userid, 'ATT', taskid + ' ' + ('ok' if solved else 'fail'))
     dao.tasks.update_usertask_record(userid, taskid, solved)
+    if solution is not None:
+        sol64 = base64.b64encode(solution.encode('utf-8'))
+        dao.users.update_userblob(
+            'sol.%s.%s.other' % (taskid, userid), sol64)
     return result

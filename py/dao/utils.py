@@ -49,3 +49,13 @@ def query_many(table, clause, params, fields='*', grplim=None):
     res = cur.fetchall()
     cur.close()
     return res
+
+
+def update_blob(id, body, blobtable):
+    cn = db_conn()
+    cur = cn.cursor()
+    query = 'insert into ' + blobtable + ' (id, val) values (%s, %s)' \
+        + ' on duplicate key update val=%s'
+    cur.execute(query, (id, body, body))
+    cn.commit()
+    cur.close()
