@@ -1,4 +1,7 @@
+import time
+
 import dao.utils
+from utils.time import ts_to_str
 
 
 def list_categories():
@@ -34,9 +37,10 @@ def load_checker(id):
 
 
 def what_user_tried(userid):
-    return dao.utils.query_many(
+    res = dao.utils.query_many(
         'usertask join tasks on taskid=id', 'userid=%s', (userid,),
         'taskid,solved,title,ts')
+    return [(tid, sol, title, ts_to_str(ts)) for (tid, sol, title, ts) in res]
 
 
 def update_usertask_record(userid, taskid, result):
@@ -45,15 +49,17 @@ def update_usertask_record(userid, taskid, result):
     res01 = 1 if result else 0
     cn = dao.utils.db_conn()
     cur = cn.cursor()
+    ts = int(time.time())
     if res_exists is None:
         cur.execute(
-            'insert into usertask (userid, taskid, solved)'
-            + 'values (%s, %s, %s)',
-            (userid, taskid, res01))
+            'insert into usertask (userid, taskid, solved, ts)'
+            + 'values (%s, %s, %s, %s)',
+            (userid, taskid, res01, ts))
     elif res_exists[0] < 1:
         cur.execute(
-            'update usertask set solved=%s where userid=%s and taskid=%s',
-            (result, userid, taskid))
+            'update usertask set solved=%s, ts=%s '
+            + 'where userid=%s and taskid=%s',
+            (result, ts, userid, taskid))
     else:
         return None
     cur.close()

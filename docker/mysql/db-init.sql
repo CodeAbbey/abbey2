@@ -22,7 +22,7 @@ create table usertask(
     userid int,
     taskid varchar(16),
     solved int default 0,
-    ts timestamp default current_timestamp,
+    ts int,
     index (userid), index(taskid));
 
 create table srvsession(
