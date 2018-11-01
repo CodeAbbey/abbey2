@@ -27,7 +27,7 @@
               <a class="nav-link" href="{{ url_for('users.ranking') }}">Ranking</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Help</a>
+              <a class="nav-link" href="{{ url_for('tools.wiki_view', pageid='help') }}">Help</a>
             </li>
             <li class="nav-item">
               {% if not 'username' in session %}

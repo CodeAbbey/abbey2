@@ -83,3 +83,5 @@ insert into blobs values ('t.qz-1.chk', x'636865636b5f74797065203d20277175697a27
 
 insert into users (username, passwd, email) values ('testuser', 'UjcJRRppx+E2tR/YPFd7k1Ivy34mQ2oK', 'test@user.mail');
 
+insert into blobs values ('wk.help.en', x'232047656e6572616c2048656c700a0a5468697320697320612068656c7020706167650a');
+
