@@ -1,5 +1,6 @@
 import os
 import json
+import time
 import flask
 from ctl.tasks import tasks_ctl
 from ctl.users import users_ctl
@@ -27,6 +28,11 @@ def page_not_found(e):
 @app.after_request
 def after_all_requests(resp):
     return utils.web.no_cache(resp)
+
+
+@app.context_processor
+def inject_globals():
+    return dict(stat_ts=int(time.time()/(15*60)))
 
 
 @app.teardown_appcontext

@@ -58,9 +58,12 @@
 {% block more_scripts %}
 <script>
 $(function() {
-    $.get("{{url_for('tasks.get_solution', taskid=data['id'], lang='other')}}", function(data) {
-        $('#solution').val(atob(data));
-    });
+    var solTextArea = $('#solution');
+    if (solTextArea.length > 0) {
+        $.get("{{url_for('tasks.get_solution', taskid=data['id'], lang='other')}}", function(data) {
+            $('#solution').val(atob(data));
+        });
+    }
 });
 </script>
 {% endblock %}

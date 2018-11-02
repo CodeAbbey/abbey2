@@ -13,3 +13,56 @@ h1 {
 .text-muted a {
     color: #888;
 }
+
+.navbar {
+    background: #e4eeff;
+    border-top: 1px solid #bbd;
+    border-bottom: 1px solid #bbd;
+}
+
+.navbar a {
+    color: #080;
+    padding: 4px;
+    border-radius: 5px;
+}
+
+.navbar a:hover {
+    background: #aaf;
+    color: yellow;
+}
+
+.navbar-toggler {
+    color: #080;
+}
+
+.centered { text-align: center; }
+.hint { color: #777; font-style: italic; }
+em { color: #668; font-family: comic sans, cursive; }
+pre {
+    display: block;
+    padding: 10px;
+    margin: 0 0 10px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+code, pre code {
+    color: #907;
+    font-size: 1.2rem !important;
+    font-weight: bold;
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 2px;
+}
+pre code {
+    display: block;
+    background: #def;
+    border-radius: 0px;
+    border: 1px solid #aae;
+    padding: 5px;
+    margin: 0px 50px;
+    text-align: left;
+}
+
