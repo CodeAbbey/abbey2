@@ -27,8 +27,7 @@ h1 {
 }
 
 .navbar a:hover {
-    background: #aaf;
-    color: yellow;
+    color: #f55;
 }
 
 .navbar-toggler {

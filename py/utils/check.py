@@ -63,7 +63,6 @@ def answer_from_form(check_type, form):
 
 def quiz_results(form):
     res = []
-    print(str(form))
     r = re.compile(r'qz\d{2}')
     for key in form:
         if r.fullmatch(key):

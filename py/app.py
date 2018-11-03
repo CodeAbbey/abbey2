@@ -43,10 +43,21 @@ def teardown(error):
 def config():
     path = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    with open(path + '/config.json') as cfg_json:
+    config_from_file(path + '/config.json')
+    additional_cfg = path + '/../.config-custom.json'
+    if os.path.isfile(additional_cfg):
+        config_from_file(additional_cfg)
+
+
+def config_from_file(filename):
+    with open(filename) as cfg_json:
         cfg = json.load(cfg_json)
         for key in cfg:
-            app.config[key] = os.environ.get(key, default=cfg[key])
+            val = cfg[key]
+            if isinstance(val, str) and val[0] == '$':
+                app.config[key] = os.environ.get(val[1:])
+            else:
+                app.config[key] = val
 
 
 config()
