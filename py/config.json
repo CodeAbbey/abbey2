@@ -1,7 +1,7 @@
 {
     "DB_HOST": "mysql.docker.host",
-    "DB_USER": "root",
-    "DB_PASSWORD": "root",
+    "DB_USER": "webdbuser",
+    "DB_PASSWORD": "w3bp@ssw0rd",
     "DB_NAME": "abbey",
     "PWD_SALT": "dummy-salt",
     "CHECKER_SERVER": "http://httpstat.us/404 dummy-salt",
