@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 import dao.tasks
-from app import app
+from main import app
 
 
 class TaskLoadTestCase(unittest.TestCase):

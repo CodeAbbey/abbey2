@@ -3,7 +3,7 @@ from unittest.mock import patch
 from werkzeug.exceptions import HTTPException
 
 import ctl.tasks
-from app import app
+from main import app
 
 
 class TasksViewTestCase(unittest.TestCase):
