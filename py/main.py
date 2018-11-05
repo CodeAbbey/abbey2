@@ -17,7 +17,7 @@ app.register_blueprint(tools_ctl)
 
 @app.route('/')
 def main_page():
-    return flask.render_template('index.html')
+    return flask.render_template('index.html', robots='index,follow')
 
 
 @app.errorhandler(404)
@@ -32,7 +32,10 @@ def after_all_requests(resp):
 
 @app.context_processor
 def inject_globals():
-    return dict(stat_ts=int(time.time()/(15*60)))
+    return dict(
+        stat_ts=int(time.time()/(15*60)),
+        robots='noindex,nofollow',
+        sitename='OpenAbbey')
 
 
 @app.teardown_appcontext

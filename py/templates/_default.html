@@ -4,7 +4,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}{% endblock %} - Abbey2</title>
+    <meta name="robots" content="{{ robots }}">
+    <title>{% block title %}{% endblock %} - {{ sitename }}</title>
     <link href="{{ url_for('static', filename = 'css/bs.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename = 'css/common.css', r=stat_ts) }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
@@ -14,7 +15,7 @@
 
     <nav class="navbar navbar-expand-md static-top">
       <div class="container">
-        <a class="navbar-brand" href="{{ url_for('main_page') }}">Abbey2</a>
+        <a class="navbar-brand" href="{{ url_for('main_page') }}">{{ sitename }}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span>(^.,.^)</span>
         </button>
