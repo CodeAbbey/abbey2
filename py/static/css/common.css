@@ -34,6 +34,13 @@ h1 {
     color: #080;
 }
 
+h1.main-hidden {
+    font-size: 1rem;
+    color: white;
+    margin-top: 0px !important;
+    margin-bottom: 0px;
+}
+
 .centered { text-align: center; }
 .hint { color: #777; font-style: italic; }
 em { color: #668; font-family: comic sans, cursive; }
