@@ -11,24 +11,24 @@ def list_categories():
         + 'sum(solved) as slv '
         + 'from taskstats group by cat) s using(id) '
         + 'left join blobs b on concat(\'t.\', c.id, \'.en\')=b.id',
-        None, (), 'c.id, title, cnt, slv - cnt, b.val')
+        None, (), 'c.id, title, cnt, slv - cnt, ifnull(b.val, b\'\')')
     return {
-        id[1:]: (title, cnt, slv, '' if dsc is None else dsc.decode('utf-8'))
+        id[1:]: (title, cnt, slv, dsc.decode('utf-8'))
         for (id, title, cnt, slv, dsc) in res}
 
 
 def load_category(cat_id):
     cat_id = '!' + cat_id
     res = dao.utils.query_one(
-        'tasks t join blobs b on concat(\'t.\', t.id, \'.en\')=b.id',
-        't.id=%s', (cat_id,), 'title, val')
+        'tasks t left join blobs b on concat(\'t.\', t.id, \'.en\')=b.id',
+        't.id=%s', (cat_id,), 'title, ifnull(val, b\'\')')
     return None if res is None else res[0], res[1].decode('utf-8')
 
 
 def load_list(cat_id):
     res = dao.utils.query_many(
         'tasks t join taskstats s on id=taskid',
-        'id like %s', (cat_id + '-%',), 'id, title, solved, cost')
+        'id like %s', (cat_id + '-%',), 'id, title, solved-1, cost')
     return {tup[0]: tup[1:] for tup in res}
 
 
