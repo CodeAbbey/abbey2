@@ -34,6 +34,21 @@ h1 {
     color: #080;
 }
 
+.cat-tile {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+}
+
+.cat-tile .hint {
+    text-align: right;
+}
+
+.cat-tile .tiny-descr {
+    font-size: 85%;
+    height: 3rem;
+    overflow: hidden;
+}
+
 h1.main-hidden {
     font-size: 1rem;
     color: white;

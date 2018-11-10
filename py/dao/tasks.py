@@ -5,19 +5,31 @@ from utils.time import ts_to_str
 
 
 def list_categories():
-    res = dao.utils.query_many('tasks', "id like '!%%'", (), '*')
-    return {id[1:]: title for (id, title) in res}
+    res = dao.utils.query_many(
+        '(select id, title from tasks where id like \'!%\') c join '
+        + '(select concat(\'!\', cat) as id, count(1) as cnt, '
+        + 'sum(solved) as slv '
+        + 'from taskstats group by cat) s using(id) '
+        + 'left join blobs b on concat(\'t.\', c.id, \'.en\')=b.id',
+        None, (), 'c.id, title, cnt, slv - cnt, b.val')
+    return {
+        id[1:]: (title, cnt, slv, '' if dsc is None else dsc.decode('utf-8'))
+        for (id, title, cnt, slv, dsc) in res}
 
 
 def load_category(cat_id):
     cat_id = '!' + cat_id
-    res = dao.utils.query_one('tasks', 'id=%s', (cat_id,), 'title')
-    return None if res is None else res[0]
+    res = dao.utils.query_one(
+        'tasks t join blobs b on concat(\'t.\', t.id, \'.en\')=b.id',
+        't.id=%s', (cat_id,), 'title, val')
+    return None if res is None else res[0], res[1].decode('utf-8')
 
 
 def load_list(cat_id):
-    res = dao.utils.query_many('tasks', "id like %s", (cat_id + '-%',), '*')
-    return {id: title for (id, title) in res}
+    res = dao.utils.query_many(
+        'tasks t join taskstats s on id=taskid',
+        'id like %s', (cat_id + '-%',), 'id, title, solved, cost')
+    return {tup[0]: tup[1:] for tup in res}
 
 
 def load_one(id):

@@ -47,11 +47,11 @@ def load_test_stuff(taskid, userid):
 
 
 def task_category(id):
-    cat_name = dao.tasks.load_category(id)
-    if cat_name is None:
+    cat = dao.tasks.load_category(id)
+    if cat is None:
         flask.abort(404)
     info = dao.tasks.load_list(id)
-    return flask.render_template('tasks/list.html', cat=cat_name, data=info)
+    return flask.render_template('tasks/list.html', cat=cat, data=info)
 
 
 @tasks_ctl.route('/check', methods=['POST'])
