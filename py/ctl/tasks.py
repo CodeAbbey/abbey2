@@ -1,6 +1,7 @@
 import flask
 import mistune
 import base64
+import time
 
 import dao.tasks
 import dao.users
@@ -41,6 +42,7 @@ def load_test_stuff(taskid, userid):
     checker_data = utils.check.checker_exec(checker_code)
     srvsess = dao.users.fetch_srvsession(userid)
     srvsess['expected'] = checker_data['answer']
+    srvsess['timeout'] = checker_data['timeout']
     srvsess['curtask'] = taskid
     dao.users.update_srvsession(userid, srvsess)
     return checker_data['input']
@@ -64,22 +66,28 @@ def task_check():
         return 'Perhaps, cheating attempt? :)'
     taskid = srvsess['curtask']
     expected = srvsess['expected']
-    del srvsess['expected'], srvsess['curtask']
+    timeout = srvsess['timeout']
+    del srvsess['expected'], srvsess['curtask'], srvsess['timeout']
     dao.users.update_srvsession(userid, srvsess)
     answer = utils.check.answer_from_form(expected[0], flask.request.form)
     if answer is None:
         return 'Wooow!'
     solution = flask.request.form.get('solution', None)
-    result = process_submission(taskid, expected, answer, solution)
+    result = process_submission(taskid, expected, timeout, answer, solution)
     return flask.render_template('tasks/check.html', result=result)
 
 
-def process_submission(taskid, expected, answer, solution):
+def process_submission(taskid, expected, timeout, answer, solution):
     task_type = expected[0]
     expected = expected[1]
     result = {}
     result['type'] = task_type
     solved = (expected == answer)
+    if int(time.time()) > timeout[0]:
+        solved = False
+        result['timeout'] = timeout[1]
+    else:
+        result['timeout'] = None
     result['status'] = solved
     if task_type == 'plain':
         result['expected'] = expected

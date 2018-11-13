@@ -2,6 +2,7 @@ import urllib.request as request
 import hashlib
 import json
 import random
+import time
 import base64
 import re
 import flask
@@ -34,7 +35,8 @@ def checker_exec(checker_code):
 def make_plain(data):
     return {
         'input': ['plain', data['input_data']],
-        'answer': ['plain', data['expected_answer']]}
+        'answer': ['plain', data['expected_answer']],
+        'timeout': time_limit(data)}
 
 
 def make_quiz(data):
@@ -49,7 +51,14 @@ def make_quiz(data):
         random.shuffle(q['items'])
     return {
         'input': ['quiz', input_data],
-        'answer': ['quiz', data['expected_answer']]}
+        'answer': ['quiz', data['expected_answer']],
+        'timeout': time_limit(data)}
+
+
+def time_limit(data):
+    timeout = data.get('time_limit', [86400, '1 day'])
+    timeout[0] += int(time.time())
+    return timeout
 
 
 def answer_from_form(check_type, form):
