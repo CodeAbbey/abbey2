@@ -6,7 +6,9 @@ from ctl.tasks import tasks_ctl
 from ctl.users import users_ctl
 from ctl.tools import tools_ctl
 import dao.utils
+import dao.users
 import utils.web
+import utils.time
 
 
 app = flask.Flask(__name__, static_url_path='/s')
@@ -17,7 +19,19 @@ app.register_blueprint(tools_ctl)
 
 @app.route('/')
 def main_page():
-    return flask.render_template('index.html', robots='index,follow')
+    def logrec(t):
+        if t[2] == 'LOG':
+            act = ('entered' if t[3] == '' else 'registered')
+        elif t[2] == 'ATT':
+            r = t[3].split(' ')
+            act = ('solved' if r[1] == 'ok' else 'failed') + ' ' + r[0]
+        return (t[1], act, utils.time.ts_ago(t[0]))
+    log = dao.users.action_log_recent(20)
+    log = [logrec(t) for t in log]
+    tasks = dao.utils.query_many('tasks t', "id not like '!%'", (), 'id,title')
+    tasks.reverse()
+    return flask.render_template(
+        'index.html', robots='index,follow', actlog=log, latest=tasks[:13])
 
 
 @app.errorhandler(404)
