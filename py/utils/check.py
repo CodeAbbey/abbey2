@@ -6,6 +6,7 @@ import time
 import base64
 import re
 import flask
+import mistune
 
 
 def checker_exec(checker_code):
@@ -40,13 +41,17 @@ def make_plain(data):
 
 
 def make_quiz(data):
+    renderer = mistune.Renderer(escape=False)
+    markdown = mistune.Markdown(renderer=renderer)
     input_data = data['input_data']
     qi = 0
     for q in input_data:
         ai = 0
         for a in q['items']:
-            q['items'][ai] = {'id': 'qz%s%s' % (qi, ai), 'text': a}
+            txt = re.sub(r'\<\/?p\>', '', markdown(a))
+            q['items'][ai] = {'id': 'qz%s%s' % (qi, ai), 'text': txt}
             ai += 1
+        q['q'] = re.sub(r'\<\/?p\>', '', markdown(q['q']))
         qi += 1
         random.shuffle(q['items'])
     return {
