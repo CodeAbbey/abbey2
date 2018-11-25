@@ -1,4 +1,5 @@
 import hashlib
+import json
 import re
 import flask
 import mistune
@@ -72,3 +73,11 @@ def wiki_view(pageid):
     markdown = mistune.Markdown(renderer=renderer)
     text = markdown(md)
     return flask.render_template('wiki.html', title=title, body=text)
+
+
+@tools_ctl.route('/.well-known/acme-challenge/<pageid>')
+def acme_challenge(pageid):
+    path = flask.current_app.root_path
+    with open(path + '/../acme-challenge.json') as acme_json:
+        data = json.load(acme_json)
+        return data.get(pageid, '...no_entry...')
