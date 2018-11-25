@@ -72,7 +72,8 @@ def wiki_view(pageid):
     renderer = mistune.Renderer(escape=False)
     markdown = mistune.Markdown(renderer=renderer)
     text = markdown(md)
-    return flask.render_template('wiki.html', title=title, body=text)
+    return flask.render_template(
+        'wiki.html', title=title, body=text, robots='index,follow')
 
 
 @tools_ctl.route('/.well-known/acme-challenge/<pageid>')

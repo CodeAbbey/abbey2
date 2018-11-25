@@ -13,7 +13,8 @@ tasks_ctl = flask.Blueprint('tasks', __name__, url_prefix='/tasks')
 @tasks_ctl.route('/')
 def task_list():
     info = dao.tasks.list_categories()
-    return flask.render_template('tasks/list_cats.html', data=info)
+    return flask.render_template(
+        'tasks/list_cats.html', data=info, robots='index,follow')
 
 
 @tasks_ctl.route('/view/<id>')
@@ -32,7 +33,8 @@ def task_view(id):
     else:
         test = None
     data = {'title': title, 'text': markdown(text), 'id': id}
-    return flask.render_template('tasks/view.html', data=data, test=test)
+    return flask.render_template(
+        'tasks/view.html', data=data, test=test, robots='index,follow')
 
 
 def load_test_stuff(taskid, userid):
@@ -53,7 +55,8 @@ def task_category(id):
     if cat is None:
         flask.abort(404)
     info = dao.tasks.load_list(id)
-    return flask.render_template('tasks/list.html', cat=cat, data=info)
+    return flask.render_template(
+        'tasks/list.html', cat=cat, data=info, robots='index,follow')
 
 
 @tasks_ctl.route('/check', methods=['POST'])
