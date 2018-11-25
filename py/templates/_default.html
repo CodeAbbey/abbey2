@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="{{ robots }}">
+    {% block metas %}{% endblock %}
     <title>{% block title %}{% endblock %} - {{ sitename }}</title>
     <link href="{{ url_for('static', filename = 'css/bs.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename = 'css/common.css', r=stat_ts) }}" rel="stylesheet">
