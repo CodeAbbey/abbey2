@@ -1,6 +1,6 @@
 {% extends "_default.html" %}
 
-{% block title %}Main Page{% endblock %}
+{% block title %}Login or Register{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -12,6 +12,14 @@
       </div>
       <div class="form-group">
         <input type="password" name="password" class="form-control" placeholder="password">
+      </div>
+      <div id="http-warning" class="text-danger" style="display:none">
+        Hey! Wait a second! You are browsing this site via <b>plain HTTP</b>.<br/>
+        If possible, switch to <b>secure HTTPS</b> before login!
+        (<a href="{{ url_for('users.login_page', _scheme='https', _external=True) }}">this link</a>)<br/>
+        <span class="small">Why so? Read short "programmer's view"
+          <a href="{{ url_for('tools.wiki_view', pageid='on-https') }}" target="_blank">explanation</a>
+          about HTTPS.</span>
       </div>
       <button type="submit" class="btn btn-primary">Log in</button>
       <div id="error-login" class="invalid-feedback"></div>
@@ -36,6 +44,8 @@
 $(function() {
     var form = $('#login-form');
     
+    checkHttps();
+
     form.submit(function(e) {
         if (!usernameIsValid() || !passwordIsValid() || !registerIsValid()) {
             console.log('preventing');
@@ -117,6 +127,12 @@ $(function() {
             field.show().text(error);
         } else {
             field.hide();
+        }
+    }
+
+    function checkHttps() {
+        if (location.protocol == 'http:') {
+            $('#http-warning').show(300);
         }
     }
 });
