@@ -8,6 +8,10 @@
     <h1>Submission Result</h1>
     {% if result.status and not result.timeout %}
     <p class="green">Your answer is correct, congratulations!</p>
+      {% if result.expl %}
+      <h3>Explanations</h3>
+      {{ result.expl | safe }}
+      {% endif %}
     {% else %}
       {% if not result.timeout %}
       <p class="red">Your answer is wrong, sorry...</p>

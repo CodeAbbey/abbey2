@@ -1,5 +1,6 @@
 from flask import g, current_app as app
 import mysql.connector as mysql
+import mistune
 
 
 def db_conn():
@@ -49,6 +50,15 @@ def query_many(table, clause, params, fields='*', grplim=None):
     res = cur.fetchall()
     cur.close()
     return res
+
+
+def query_markdown_blob(bid):
+    val = query_one('blobs', "id=%s", (bid,), 'val')
+    if val is None:
+        return ''
+    renderer = mistune.Renderer(escape=False)
+    markdown = mistune.Markdown(renderer=renderer)
+    return markdown(val[0].decode('utf-8'))
 
 
 def update_blob(id, body, blobtable):

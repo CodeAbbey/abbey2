@@ -1,5 +1,4 @@
 import flask
-import mistune
 import base64
 import time
 
@@ -26,13 +25,11 @@ def task_view(id):
     if task_data is None:
         flask.abort(404)
     (title, text) = task_data
-    renderer = mistune.Renderer(escape=False)
-    markdown = mistune.Markdown(renderer=renderer)
     if 'username' in flask.session:
         test = load_test_stuff(id_clean, flask.session['userid'])
     else:
         test = None
-    data = {'title': title, 'text': markdown(text), 'id': id}
+    data = {'title': title, 'text': text, 'id': id}
     return flask.render_template(
         'tasks/view.html', data=data, test=test, robots='index,follow')
 
@@ -92,6 +89,8 @@ def process_submission(taskid, expected, timeout, answer, solution):
     else:
         result['timeout'] = None
     result['status'] = solved
+    if solved:
+        result['expl'] = dao.utils.query_markdown_blob('t.' + taskid + '.x.en')
     if task_type == 'plain':
         result['expected'] = expected
         result['answer'] = answer

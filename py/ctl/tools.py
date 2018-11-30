@@ -2,7 +2,6 @@ import hashlib
 import json
 import re
 import flask
-import mistune
 
 import dao.users
 import dao.utils
@@ -62,16 +61,11 @@ def update_stats():
 def wiki_view(pageid):
     if re.match(r'[a-z][a-z0-9\-]*$', pageid) is None:
         flask.abort(404)
-    pageid = 'wk.' + pageid + '.en'
-    body = dao.utils.query_one('blobs', 'id=%s', (pageid,), 'val')
-    if body is None:
+    text = dao.utils.query_markdown_blob('wk.' + pageid + '.en')
+    if text == '':
         flask.abort(404)
-    md = body[0].decode('utf-8')
-    m = re.search(r'#\s(.+)', md)
+    m = re.search(r'h1\>(.+)\<\/h1', text)
     title = m.group(1) if m is not None else 'Wiki'
-    renderer = mistune.Renderer(escape=False)
-    markdown = mistune.Markdown(renderer=renderer)
-    text = markdown(md)
     return flask.render_template(
         'wiki.html', title=title, body=text, robots='index,follow')
 

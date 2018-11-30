@@ -37,9 +37,8 @@ def load_one(id):
     if res is None:
         return None
     (title,) = res
-    (text,) = dao.utils.query_one(
-        'blobs', "id=concat('t.', %s, '.en')", (id,), 'val')
-    return (title, text.decode('utf-8'))
+    text = dao.utils.query_markdown_blob('t.' + id + '.en')
+    return (title, text)
 
 
 def load_checker(id):
