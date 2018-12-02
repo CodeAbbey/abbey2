@@ -34,6 +34,10 @@ h1 {
     color: #080;
 }
 
+.table-hover tbody tr:hover td {
+    background-color: #ffa;
+}
+
 .cat-tile {
     margin-top: 0.5rem;
     padding: 0.5rem;

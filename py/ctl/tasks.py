@@ -1,6 +1,7 @@
 import flask
 import base64
 import time
+import re
 
 import dao.tasks
 import dao.users
@@ -80,7 +81,7 @@ def task_check():
 def process_submission(taskid, expected, timeout, answer, solution):
     task_type = expected[0]
     expected = expected[1]
-    result = {}
+    result = {'taskid': taskid, 'catid': re.sub(r'^([a-z]+).*', r'\1', taskid)}
     result['type'] = task_type
     solved = (expected == answer)
     if int(time.time()) > timeout[0]:

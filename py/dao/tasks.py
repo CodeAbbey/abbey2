@@ -1,7 +1,9 @@
 import time
+import re
 
 import dao.utils
 from utils.time import ts_to_str
+from utils.web import markdown
 
 
 def list_categories():
@@ -13,7 +15,7 @@ def list_categories():
         + 'left join blobs b on concat(\'t.\', c.id, \'.en\')=b.id',
         None, (), 'c.id, title, cnt, slv - cnt, ifnull(b.val, b\'\')')
     return {
-        id[1:]: (title, cnt, slv, dsc.decode('utf-8'))
+        id[1:]: (title, cnt, slv, re.sub(r'\n.*', '', dsc.decode('utf-8')))
         for (id, title, cnt, slv, dsc) in res}
 
 
@@ -22,7 +24,7 @@ def load_category(cat_id):
     res = dao.utils.query_one(
         'tasks t left join blobs b on concat(\'t.\', t.id, \'.en\')=b.id',
         't.id=%s', (cat_id,), 'title, ifnull(val, b\'\')')
-    return None if res is None else res[0], res[1].decode('utf-8')
+    return None if res is None else res[0], markdown(res[1].decode('utf-8'))
 
 
 def load_list(cat_id):

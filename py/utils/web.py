@@ -1,5 +1,6 @@
 import functools
 import flask
+import mistune
 
 
 def login_required(f):
@@ -21,3 +22,11 @@ def no_cache(resp):
         resp.headers.set('Expires', 'Fri, 20 Nov 1981 08:52:00 GMT')
         resp.headers.set('Pragma', 'no-cache')
     return resp
+
+
+def markdown(text):
+    if 'markdown' not in flask.g:
+        flask.g.markdown = mistune.Markdown(
+            renderer=mistune.Renderer(escape=False))
+    md = flask.g.markdown
+    return md(text)

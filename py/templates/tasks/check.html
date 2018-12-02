@@ -8,10 +8,6 @@
     <h1>Submission Result</h1>
     {% if result.status and not result.timeout %}
     <p class="green">Your answer is correct, congratulations!</p>
-      {% if result.expl %}
-      <h3>Explanations</h3>
-      {{ result.expl | safe }}
-      {% endif %}
     {% else %}
       {% if not result.timeout %}
       <p class="red">Your answer is wrong, sorry...</p>
@@ -27,7 +23,17 @@
       <p>Hint: your answer is great but needs to be {{ result.hint }}% more correct to pass :)</p>
       {% endif %}
     {% endif %}
-    <a href="javascript:history.go(-1);">Try Again</a>
+    <p>
+      <a href="{{ url_for('tasks.task_view', id=result.taskid) }}">Try Again</a>
+      /
+      <a href="{{ url_for('tasks.task_view', id=result.catid) }}">All problems in this Volume</a>
+      /
+      <a href="{{ url_for('tasks.task_list') }}">All Volumes List</a>
+    </p>
+    {% if result.status and not result.timeout and result.expl %}
+      <h3>Explanations</h3>
+      {{ result.expl | safe }}
+    {% endif %}
   </div>
 </div>
 {% endblock %}
