@@ -1,3 +1,4 @@
+import re
 import functools
 import flask
 import mistune
@@ -30,3 +31,7 @@ def markdown(text):
             renderer=mistune.Renderer(escape=False))
     md = flask.g.markdown
     return md(text)
+
+
+def canonical():
+    return re.sub(r'^http\:', 'https:', flask.request.base_url)
