@@ -50,7 +50,9 @@ create table userstats (
     cnt int,
     cost float,
     primary key (userid, cat),
-    index (userid), index(cat));
+    index (userid), index(cat), index(cnt), index(cost));
+
+create table usertop (userid int, cat varchar(16), cnt int, cost float);
 
 create view taskcounts as
     select id as taskid, ifnull(cnt, 0) + 1 as cnt, left(id, instr(id, '-') - 1) as cat

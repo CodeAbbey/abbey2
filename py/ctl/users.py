@@ -110,7 +110,15 @@ def logout():
 
 @users_ctl.route('/ranking')
 def ranking():
-    users = dao.utils.query_many(
-        'users u join userstats s on u.id=s.userid', None, (),
-        'username,cat,cnt,cost', 'order by cost desc limit 100')
-    return flask.render_template('users/ranking.html', users=users)
+    tops = dao.utils.query_many(
+        "users u join usertop s on u.id=s.userid "
+        + "join tasks t on concat('!', s.cat) = t.id",
+        None, (),
+        'username,cat,cnt,cost, title', 'order by cat, cost desc')
+    data = {}
+    for rec in tops:
+        cat = rec[1]
+        if cat not in data:
+            data[cat] = []
+        data[cat].append(rec)
+    return flask.render_template('users/ranking.html', users=data)

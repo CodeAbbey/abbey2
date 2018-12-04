@@ -53,6 +53,14 @@ def update_stats():
     cn.commit()
     cur.execute('replace into userstats select * from userstats_v', ())
     cn.commit()
+    cur.execute('delete from usertop', ())
+    cur.execute(
+        "insert into usertop select userid, cat, cnt, cost from "
+        + "(select userid, cat, cnt, cost, "
+        + "@rn := if(@cat = cat, @rn+1, if(@cat := cat, 1, 1)) as rn "
+        + "from userstats cross join (SELECT @rn := 0, @cat := '') as vars "
+        + "order by cat, cnt desc) as t where t.rn <= 10", ())
+    cn.commit()
     cur.close()
     return 'ok'
 
