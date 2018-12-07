@@ -60,9 +60,9 @@ def action_log_recent(limit):
     return dao.utils.query_many(
         'actionlog join users on userid=id',
         None,
-        (limit,),
-        'ts, username, action, txt',
-        'order by ts desc limit %s')
+	    (limit,),
+        'max(ts) as mts, username, action, txt',
+        'group by userid, action, txt order by mts desc limit %s')
 
 
 def update_userblob(id, body):
