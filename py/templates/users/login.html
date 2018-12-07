@@ -13,9 +13,9 @@
       <div class="form-group">
         <input type="password" name="password" class="form-control" placeholder="password">
       </div>
-      <div id="http-warning" class="text-danger" style="display:none">
-        Hey! Wait a second! You are browsing this site via <b>plain HTTP</b>.<br/>
-        If possible, switch to <b>secure HTTPS</b> before login!
+      <div id="http-warning" class="text-success" style="display:none">
+        Hey! Wait a second! You are browsing this site via <b>plain HTTP</b>, it's Ok.<br/>
+        But if possible, switch to <b>secure HTTPS</b> before login!
         (<a href="{{ url_for('users.login_page', _scheme='https', _external=True) }}">this link</a>)<br/>
         <span class="small">Why so? Read short "programmer's view"
           <a href="{{ url_for('tools.wiki_view', pageid='on-https') }}" target="_blank">explanation</a>

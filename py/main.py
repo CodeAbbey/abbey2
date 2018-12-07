@@ -28,10 +28,11 @@ def main_page():
         return (t[1], act, utils.time.ts_ago(t[0]))
     log = dao.users.action_log_recent(20)
     log = [logrec(t) for t in log]
-    tasks = dao.utils.query_many('tasks t', "id not like '!%'", (), 'id,title')
-    tasks.reverse()
+    tasks = dao.utils.query_many(
+        'tasks t join taskstats s on t.id = s.taskid',
+        None, (), 'id,title', 'order by solved asc limit 13')
     return flask.render_template(
-        'index.html', robots='index,follow', actlog=log, latest=tasks[:13])
+        'index.html', robots='index,follow', actlog=log, latest=tasks)
 
 
 @app.errorhandler(404)
