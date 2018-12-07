@@ -60,7 +60,7 @@ def action_log_recent(limit):
     return dao.utils.query_many(
         'actionlog join users on userid=id',
         None,
-	    (limit,),
+        (limit,),
         'max(ts) as mts, username, action, txt',
         'group by userid, action, txt order by mts desc limit %s')
 
