@@ -48,6 +48,24 @@
         <label for="solution">Please, post Your code here:</label>
         <textarea id="solution" name="solution" class="form-control" rows="10"></textarea>
       </div>
+      <div class="form-row">
+        <div class="from-group col">
+          <select class="form-control" id="language-select" name="language-select">
+            {% for langkey in test[2] %}
+            <option value="{{ langkey }}">{{ test[2][langkey] }}</option>
+            {% endfor %}
+          </select>
+          <label class="small" for="language-select">Language select</label>
+        </div>
+        <div class="from-group col">
+          <button class="btn btn-info d-block" id="run-code" type="button" disabled="true">Run on Server</button>
+          <label class="small" for="run-code">execute with Hackerrank API</label>
+        </div>
+        <div class="from-group col">
+          <button class="btn btn-warning d-block" id="load-solution" type="button" disabled="true">Load another</button>
+          <label class="small" for="load-solution">(re)load existing solution</label>
+        </div>
+      </div>
       {% endif %}
     </form>
     {% endif %}
@@ -60,8 +78,13 @@
 $(function() {
     var solTextArea = $('#solution');
     if (solTextArea.length > 0) {
-        $.get("{{url_for('tasks.get_solution', taskid=data['id'], lang='other')}}", function(data) {
-            $('#solution').val(atob(data));
+        $.get("{{url_for('tasks.get_solution', taskid=data['id'])}}", function(data) {
+            var keys = Object.keys(data);//$('#solution').val(atob(data));
+            if (keys.length > 0) {
+                var lang = keys[0];
+                $('#language-select').val(lang)
+                $('#solution').val(atob(data[lang]));
+            }
         });
     }
 });

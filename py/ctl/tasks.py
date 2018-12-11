@@ -45,7 +45,7 @@ def load_test_stuff(taskid, userid):
     srvsess['timeout'] = checker_data['timeout']
     srvsess['curtask'] = taskid
     dao.users.update_srvsession(userid, srvsess)
-    return checker_data['input']
+    return checker_data['input'] + [checker_data['langs']]
 
 
 def task_category(id):
@@ -73,12 +73,15 @@ def task_check():
     answer = utils.check.answer_from_form(expected[0], flask.request.form)
     if answer is None:
         return 'Wooow!'
-    solution = flask.request.form.get('solution', None)
-    result = process_submission(taskid, expected, timeout, answer, solution)
+    sol = flask.request.form.get('solution', None)
+    lang = flask.request.form.get('language-select', '')
+    if lang not in utils.check.language_list():
+        lang = 'other'
+    result = process_submission(taskid, expected, timeout, answer, sol, lang)
     return flask.render_template('tasks/check.html', result=result)
 
 
-def process_submission(taskid, expected, timeout, answer, solution):
+def process_submission(taskid, expected, timeout, answer, solution, lang):
     task_type = expected[0]
     expected = expected[1]
     result = {'taskid': taskid, 'catid': re.sub(r'^([a-z]+).*', r'\1', taskid)}
@@ -105,16 +108,23 @@ def process_submission(taskid, expected, timeout, answer, solution):
     if solution is not None:
         sol64 = base64.b64encode(solution.encode('utf-8'))
         dao.users.update_userblob(
-            'sol.%s.%s.other' % (taskid, userid), sol64)
+            'sol.%s.%s.%s' % (taskid, userid, lang), sol64)
     return result
 
 
-@tasks_ctl.route('/sol/<taskid>/<lang>')
-def get_solution(taskid, lang):
+@tasks_ctl.route('/sol/<taskid>')
+def get_solution(taskid):
     userid = flask.session.get('userid')
-    if userid is None:
+    if userid is None or not proper_task_id(taskid):
         return 'Too bad request', 400
-    key = 'sol.%s.%s.%s' % (taskid, userid, lang)
-    res = dao.utils.query_one('userblobs', 'id=%s', (key,), 'val')
-    sol = '' if res is None else res[0]
-    return (sol, {'Content-Type': 'text/plain'})
+    key = 'sol.%s.%s.%%' % (taskid, userid)
+    res = dao.utils.query_many('userblobs', 'id like %s', (key,), 'id, val')
+    sol = {}
+    for key, val in res:
+        lang = re.sub(r'.*\.', '', key)
+        sol[lang] = val.decode('utf-8')
+    return (flask.jsonify(sol), {'Content-Type': 'text/json'})
+
+
+def proper_task_id(taskid):
+    return re.fullmatch(r'[a-z][a-z\d]+\-\d+', taskid) is not None

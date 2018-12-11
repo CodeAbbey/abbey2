@@ -38,6 +38,7 @@ def make_plain(data):
     return {
         'input': ['plain', data['input_data']],
         'answer': ['plain', data['expected_answer']],
+        'langs': language_list(),
         'timeout': time_limit(data)}
 
 
@@ -57,6 +58,29 @@ def make_quiz(data):
         'input': ['quiz', input_data],
         'answer': ['quiz', data['expected_answer']],
         'timeout': time_limit(data)}
+
+
+def language_list():
+    return {
+        'py': 'Python',
+        'cpp': 'C++',
+        'java': 'Java',
+        'cs': 'C#',
+        'ruby': 'Ruby',
+        'php': 'PHP',
+        'js': 'JavaScript',
+        'scala': 'Scala',
+        'fs': 'F#',
+        'go': 'Go',
+        'haskell': 'Haskell',
+        'ocaml': 'Ocaml',
+        'julia': 'Julia',
+        'erlang': 'Erlang',
+        'ada': 'Ada',
+        'rust': 'Rust',
+        'basic': 'Basic',
+        'other': 'Other',
+    }
 
 
 def time_limit(data):
