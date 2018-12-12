@@ -45,7 +45,7 @@ def load_test_stuff(taskid, userid):
     srvsess['timeout'] = checker_data['timeout']
     srvsess['curtask'] = taskid
     dao.users.update_srvsession(userid, srvsess)
-    return checker_data['input'] + [checker_data['langs']]
+    return checker_data['input'] + [checker_data.get('langs', {})]
 
 
 def task_category(id):
