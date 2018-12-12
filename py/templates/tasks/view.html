@@ -17,7 +17,7 @@
     {% elif not test %}
     <span class="green">No checker for this task... strange... :)</span>
     {% else %}
-    <form action="{{ url_for('tasks.task_check') }}" method="POST">
+    <form action="{{ url_for('tasks.task_check') }}" method="POST" onsubmit="return beforeSolutionSubmit()">
       {% if test[0] == 'plain' %}
       <div class="form-group">
         <label for="inputdata">Input Data:</label>
@@ -62,31 +62,154 @@
           <label class="small" for="run-code">execute with Hackerrank API</label>
         </div>
         <div class="from-group col">
-          <button class="btn btn-warning d-block" id="load-solution" type="button" disabled="true">Load another</button>
+          <button class="btn btn-warning d-block" id="load-solution" type="button" data-toggle="modal" data-target="#load-solution-modal">Load another</button>
           <label class="small" for="load-solution">(re)load existing solution</label>
         </div>
       </div>
       {% endif %}
     </form>
+    <div class="modal fade" id="load-solution-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Your Stored Solutions</h5>
+          </div>
+          <div class="modal-body">
+            <p>You have solutions in these languages:<br/><br/>
+              <span id="solution-links"></span><br/>
+              <span class="small">Clicking any of these will replace your current code with the stored version.<br/>
+                Click "Close" if changed your mind.</span>
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     {% endif %}
   </div>
 </div>
 {% endblock %}
 
 {% block more_scripts %}
+{% if session['username'] %}
+
 <script>
-$(function() {
+
+function LanguageDetector() {
+    function countCharacters(s) {
+        var cnt = [];
+        for (var i = 0; i < 256; i++) {
+            cnt[i] = 0;
+        }
+        for (var j = 0; j < s.length; j++) {
+            var c = s.charCodeAt(j);
+            if (c >= 0 && c < 256) {
+                cnt[i]++;
+            }
+        }
+        return cnt;
+    }
+
+    this.detect = function(s) {
+        var cnt = countCharacters(s);
+        var len = s.length;
+        var lenBf = s.replace(/[^\+\-\.\,\[\]\<\>\:\;\s]/g, '').length;
+        if (lenBf / (len + 1) > 0.6 && s.indexOf('#include') < 0) {
+            return 'bf';
+        }
+        if (s.indexOf('var ') >= 0) {
+            return s.indexOf('using ') >= 0 ? 'cs' : 'js';
+        }
+        if (/\bdef\b/.test(s) && /\bend\b/.test(s)) {
+            return 'ruby';
+        }
+        if (/with\s+ada/i.test(s)) {
+            return 'ada';
+        }
+        if (/fn\s+main/.test(s)) {
+            return 'rust';
+        }
+        var endLines = s.match(/[\,\;\{\}][\040\t]*[\n\r]/);
+        endLines = endLines !== null ? endLines.length : 0;
+        if (endLines / (cnt[10] + 1) > 0.4) {
+            if (s.indexOf('#include') >= 0) {
+                return 'cpp';
+            }
+            if (/main\s*\(\s*String/.test(s)) {
+                return 'java';
+            }
+            if (cnt['$'.charCodeAt(0)] / len > 0.005) {
+                return 'php';
+            }
+            return 'cs';
+        } else {
+            if (/\([\+\*]/.test(s)) {
+                return 'lisp';
+            }
+            if (s.indexOf('dim ') >= 0) {
+                return 'basic';
+            }
+            if (s.indexOf('local ') >= 0) {
+                return 'lua';
+            }
+            return 'py';
+        }
+    }
+}
+
+var languageDetector = new LanguageDetector();
+
+function findLanguageName(key) {
+    return $('#language-select option[value=' + key + ']').text();
+}
+
+function beforeSolutionSubmit() {
     var solTextArea = $('#solution');
-    if (solTextArea.length > 0) {
+    if (solTextArea.length == 0) {
+        return true;
+    }
+    var text = solTextArea.val();
+    var detected = languageDetector.detect(text);
+    var selected = $('#language-select').val();
+    if (detected != selected) {
+        return confirm('Are you sure your solution is in "'
+            + findLanguageName(selected) + '" language?\n\n'
+            + 'If not, click "Cancel" and choose proper language please...\n'
+            + '(perhaps, "' + findLanguageName(detected) + '"?)');
+    }
+}
+
+function reloadSolution(lang) {
+    $('#language-select').val(lang);
+    $('#solution').val(atob(window.storedSolutions[lang]));
+}
+
+function reloadSolutionLink(lang) {
+    reloadSolution(lang);
+    $('#load-solution-modal').modal('hide');
+}
+
+$(function() {
+    if ($('#solution').length > 0) {
         $.get("{{url_for('tasks.get_solution', taskid=data['id'])}}", function(data) {
-            var keys = Object.keys(data);//$('#solution').val(atob(data));
+            window.storedSolutions = data;
+            var keys = Object.keys(data);
+            var solLinksBody = $('#solution-links');
+            for (var i in keys) {
+                $('<a></a>').attr('href', '#').attr('onclick', 'reloadSolution("' + keys[i] + '")')
+                    .text(findLanguageName(keys[i])).appendTo(solLinksBody);
+                solLinksBody.append(' ');
+            }
             if (keys.length > 0) {
                 var lang = keys[0];
-                $('#language-select').val(lang)
-                $('#solution').val(atob(data[lang]));
+                reloadSolution(lang);
             }
         });
     }
 });
+
 </script>
+{% endif %}
 {% endblock %}
