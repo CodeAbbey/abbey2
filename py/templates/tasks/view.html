@@ -47,6 +47,7 @@
       <div class="form-group">
         <label for="solution">Please, post Your code here:</label>
         <textarea id="solution" name="solution" class="form-control" rows="10"></textarea>
+        <div id="solution-div" style="border: 1px solid #aaa; margin-bottom: 1rem;"/>
       </div>
       <div class="form-row">
         <div class="from-group col">
@@ -94,6 +95,8 @@
 
 {% block more_scripts %}
 {% if session['username'] %}
+
+<script src="{{ url_for('static', filename = 'js/ace/ace.js') }}" type="text/javascript"></script>
 
 <script>
 
@@ -182,8 +185,8 @@ function beforeSolutionSubmit() {
 }
 
 function reloadSolution(lang) {
-    $('#language-select').val(lang);
-    $('#solution').val(atob(window.storedSolutions[lang]));
+    window.aceEditor.setValue(atob(window.storedSolutions[lang]));
+    $('#language-select').val(lang).change();
 }
 
 function reloadSolutionLink(lang) {
@@ -191,14 +194,42 @@ function reloadSolutionLink(lang) {
     $('#load-solution-modal').modal('hide');
 }
 
+function changeEditorLanguage() {
+    var lang = $('#language-select').val();
+    switch (lang) {
+        case "cpp": lang = "c_cpp";break;
+        case "cs": lang = "csharp";break;
+        case "java": lang = "java";break;
+        case "js": lang = "javascript";break;
+        case "py": lang = "python";break;
+        case "ruby": lang = "ruby";break;
+        case "scala": lang = "scala";break;
+        default: lang = "plain_text";break;
+    }
+    aceEditor.getSession().setMode("ace/mode/" + lang);
+}
+
 $(function() {
-    if ($('#solution').length > 0) {
+    var solutionTextarea = $('#solution');
+    if (solutionTextarea.length > 0) {
+        solutionTextarea.hide();
+        window.aceEditor = ace.edit('solution-div', {
+            minLines: 10,
+            maxLines: 30,
+            showPrintMargin: false,
+            fontSize: '1rem',
+            mode: 'ace/mode/plain_text',
+        });
+        window.aceEditor.getSession().on('change', function() {
+            solutionTextarea.val(window.aceEditor.getSession().getValue());
+        });
+        $('#language-select').change(changeEditorLanguage);
         $.get("{{url_for('tasks.get_solution', taskid=data['id'])}}", function(data) {
             window.storedSolutions = data;
             var keys = Object.keys(data);
             var solLinksBody = $('#solution-links');
             for (var i in keys) {
-                $('<a></a>').attr('href', '#').attr('onclick', 'reloadSolution("' + keys[i] + '")')
+                $('<a></a>').attr('href', '#').attr('onclick', 'reloadSolutionLink("' + keys[i] + '")')
                     .text(findLanguageName(keys[i])).appendTo(solLinksBody);
                 solLinksBody.append(' ');
             }
