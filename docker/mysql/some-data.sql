@@ -22,5 +22,5 @@ insert into users (username, passwd, email) values ('testuser', 'UjcJRRppx+E2tR/
 insert into blobs values ('wk.help.en', x'232047656e6572616c2048656c700a0a5468697320697320612068656c7020706167650a');
 
 insert into usertask values (1, 'prg-1', 1, 1544475003);
-insert into userblobs values ('sol.prg-1.1.other', _binary 'cHJpbnQoc3VtKFtpbnQoeCkgZm9yIHggaW4gaW5wdXQoKS5zcGxpdCgpXSkp');
-insert into actionlog values (1544472328, 1, 'LOG', ''), (1544475003, 1, 'ATT', 'prg-1 ok');
+insert into userblobs values ('sol.prg-1.1.py', _binary 'cHJpbnQoc3VtKFtpbnQoeCkgZm9yIHggaW4gaW5wdXQoKS5zcGxpdCgpXSkp');
+insert into actionlog values (unix_timestamp() - 90, 1, 'LOG', ''), (unix_timestamp() - 30, 1, 'ATT', 'prg-1 ok');

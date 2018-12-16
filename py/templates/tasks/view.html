@@ -186,6 +186,7 @@ function beforeSolutionSubmit() {
 
 function reloadSolution(lang) {
     window.aceEditor.setValue(atob(window.storedSolutions[lang]));
+    window.aceEditor.getSelection().selectFileStart();
     $('#language-select').val(lang).change();
 }
 
