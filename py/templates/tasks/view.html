@@ -59,7 +59,7 @@
           <label class="small" for="language-select">Language select</label>
         </div>
         <div class="from-group col">
-          <button class="btn btn-info d-block" id="run-code" type="button" disabled="true">Run on Server</button>
+          <button class="btn btn-info d-block" id="run-code" type="button">Run on Server</button>
           <label class="small" for="run-code">execute with Hackerrank API</label>
         </div>
         <div class="from-group col">
@@ -210,7 +210,26 @@ function changeEditorLanguage() {
     aceEditor.getSession().setMode("ace/mode/" + lang);
 }
 
+function executeCode() {
+    var data = {
+        code: btoa($('#solution').val()),
+        input: btoa($('#inputdata').val()),
+        lang: $('#language-select').val(),
+    };
+    $.ajax({
+        type: 'POST',
+        url: "{{url_for('tools.run_code')}}",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'text',
+        success: function(res) {
+            $("#answer").val(res);
+        }
+    });
+}
+
 $(function() {
+    $('#run-code').click(executeCode);
     var solutionTextarea = $('#solution');
     if (solutionTextarea.length > 0) {
         solutionTextarea.hide();

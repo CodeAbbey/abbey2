@@ -6,5 +6,6 @@
     "PWD_SALT": "dummy-salt",
     "CHECKER_SERVER": "http://httpstat.us/404 dummy-salt",
     "BLOB_SALT": "dummy-salt",
+    "HACKERRANK_KEY": "nokey",
     "SECRET_KEY": null
 }

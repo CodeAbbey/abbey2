@@ -1,4 +1,4 @@
-import urllib.request as request
+from urllib import request, parse
 import hashlib
 import json
 import random
@@ -114,3 +114,28 @@ def quiz_wrong_percentage(expected, answer):
     missed = len(expected.difference(answer))
     extra = len(answer.difference(expected))
     return (missed + extra) * 50 / len(expected)
+
+
+def run_code(source, input_data, lang):
+    lang = {'py': 30, 'cpp': 2, 'java': 43, 'csharp': 9}.get(lang, None)
+    if lang is None:
+        return 'Sorry, language not supported'
+    data = {
+        'source': source,
+        'testcases': json.dumps([input_data]),
+        'lang': lang,
+        'api_key': flask.current_app.config['HACKERRANK_KEY']
+    }
+    url = 'http://api.hackerrank.com/checker/submission.json'
+    req = request.Request(url, parse.urlencode(data).encode())
+    try:
+        with request.urlopen(req) as resp:
+            result = resp.read()
+        jres = json.loads(result.decode('utf-8'))
+        msg = jres['result']['message'][0]
+        if msg == 'Success':
+            return jres['result']['stdout'][0]
+        else:
+            return msg
+    except BaseException:
+        return 'Unexpected error from server :('
