@@ -25,7 +25,6 @@ def query_list(table, fields='*'):
         res = cur.fetchall()
         return res
     except mysql.Error as err:
-        print("query_list error: {}".format(err))
         return []
     finally:
         cur.close()
@@ -34,7 +33,6 @@ def query_list(table, fields='*'):
 def query(table, clause, fields, grplim):
     where = '' if clause is None else (' where ' + clause)
     tail = '' if grplim is None else (' ' + grplim)
-    print('Q:' + 'select ' + fields + ' from ' + table + where + tail)
     return 'select ' + fields + ' from ' + table + where + tail
 
 

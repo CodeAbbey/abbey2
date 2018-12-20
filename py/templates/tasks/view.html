@@ -216,6 +216,13 @@ function executeCode() {
         input: btoa($('#inputdata').val()),
         lang: $('#language-select').val(),
     };
+    var answerField = $('#answer');
+    answerField.focus();
+    answerField.val('please wait please wait ');
+    var timer = setInterval(function(){
+        var s = answerField.val();
+        answerField.val(s.substring(1) + s[0]);
+    }, 117);
     $.ajax({
         type: 'POST',
         url: "{{url_for('tools.run_code')}}",
@@ -223,7 +230,8 @@ function executeCode() {
         contentType: 'application/json',
         dataType: 'text',
         success: function(res) {
-            $("#answer").val(res);
+            clearInterval(timer);
+            answerField.val(res);
         }
     });
 }
