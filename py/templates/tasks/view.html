@@ -216,6 +216,8 @@ function executeCode() {
         input: btoa($('#inputdata').val()),
         lang: $('#language-select').val(),
     };
+    var runButton = $('#run-code');
+    runButton.attr('disabled', 'true');
     var answerField = $('#answer');
     answerField.focus();
     answerField.val('please wait please wait ');
@@ -232,6 +234,7 @@ function executeCode() {
         success: function(res) {
             clearInterval(timer);
             answerField.val(res);
+            runButton.attr('disabled', null);
         }
     });
 }
