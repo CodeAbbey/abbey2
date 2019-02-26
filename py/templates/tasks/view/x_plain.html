@@ -1,0 +1,34 @@
+<div class="form-group">
+  <label for="inputdata">Input Data:</label>
+  <textarea id="inputdata" name="inputdata" class="form-control" rows="10">{{ test[1] | safe }}</textarea>
+</div>
+<div class="form-group">
+  <label for="answer">Your Answer:</label>
+  <input type="text" id="answer" name="answer" class="form-control" placeholder="your answer here">
+</div>
+<div class="form-group">
+  <button type="submit" class="btn btn-primary">Submit</button>
+</div>
+<div class="form-group">
+  <label for="solution">Please, post Your code here:</label>
+  <textarea id="solution" name="solution" class="form-control" rows="10"></textarea>
+  <div id="solution-div" style="border: 1px solid #aaa; margin-bottom: 1rem;"/>
+</div>
+<div class="form-row">
+  <div class="from-group col">
+    <select class="form-control" id="language-select" name="language-select">
+      {% for langkey in test[2] %}
+      <option value="{{ langkey }}">{{ test[2][langkey] }}</option>
+      {% endfor %}
+    </select>
+    <label class="small" for="language-select">Language select</label>
+  </div>
+  <div class="from-group col">
+    <button class="btn btn-info d-block" id="run-code" type="button">Run on Server</button>
+    <label class="small" for="run-code">execute with Hackerrank API</label>
+  </div>
+  <div class="from-group col">
+    <button class="btn btn-warning d-block" id="load-solution" type="button" data-toggle="modal" data-target="#load-solution-modal">Load another</button>
+    <label class="small" for="load-solution">(re)load existing solution</label>
+  </div>
+</div>

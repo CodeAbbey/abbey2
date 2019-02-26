@@ -1,0 +1,62 @@
+{% extends "_default.html" %}
+
+{% block title %}View Task {{ data['title'] }} {% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <h1> {{ data['title'] }} </h1>
+    {{ data['text'] | safe }}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    {% if not session['username'] %}
+    <span class="red">You need to login to get test data and submit solution...</span>
+    {% elif not test %}
+    <span class="green">No checker for this task... strange... :)</span>
+    {% else %}
+    <form action="{{ url_for('tasks.task_check') }}" method="POST" onsubmit="return beforeSolutionSubmit()">
+      {% if test[0] == 'plain' %}
+        {% include 'tasks/view/x_plain.html' %}
+      {% elif test[0] == 'quiz' %}
+        {% include 'tasks/view/x_quiz.html' %}
+      {% else %}
+      <span class="green">Checker of unknown type... strange... :)</span>
+      {% endif %}
+    </form>
+    <div class="modal fade" id="load-solution-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Your Stored Solutions</h5>
+          </div>
+          <div class="modal-body">
+            <p>You have solutions in these languages:<br/><br/>
+              <span id="solution-links"></span><br/>
+              <span class="small">Clicking any of these will replace your current code with the stored version.<br/>
+                Click "Close" if changed your mind.</span>
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block more_scripts %}
+{% if session['username'] %}
+
+<script src="{{ url_for('static', filename = 'js/ace/ace.js') }}" type="text/javascript"></script>
+
+<script>
+{% include 'tasks/view/task_view.js' %}
+</script>
+{% endif %}
+{% endblock %}

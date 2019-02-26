@@ -1,0 +1,13 @@
+{% for q in test[1] %}
+<div>{{ q['q'] | safe }}
+  <ul>
+  {% for a in q['items'] %}
+    <li><input name="{{ a.id }}" type="checkbox"/> <label for="{{ a.id }}">{{ a.text | safe }}</label></li>
+  {% endfor %}
+  </ul>
+</div>
+{% endfor %}
+<div class="form-group">
+  <button type="submit" class="btn btn-primary">Submit</button>
+</div>
+

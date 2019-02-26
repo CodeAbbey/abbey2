@@ -32,7 +32,7 @@ def task_view(id):
         test = None
     data = {'title': title, 'text': text, 'id': id}
     return flask.render_template(
-        'tasks/view.html', data=data, test=test, robots='index,follow')
+        'tasks/view/view.html', data=data, test=test, robots='index,follow')
 
 
 def load_test_stuff(taskid, userid):
