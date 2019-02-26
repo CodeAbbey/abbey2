@@ -10,7 +10,7 @@ import flask
 import utils.web
 
 
-def checker_exec(checker_code):
+def checker_exec(checker_code, mix=True):
     checker_code_s = checker_code.decode('utf-8')
     if checker_code_s.startswith('#php'):
         srv = flask.current_app.config['CHECKER_SERVER'].split(' ', 2)
@@ -31,7 +31,7 @@ def checker_exec(checker_code):
         if 'check_type' not in local_vars:
             return make_plain(local_vars)
         elif local_vars['check_type'] == 'quiz':
-            return make_quiz(local_vars)
+            return make_quiz(local_vars, mix)
 
 
 def make_plain(data):
@@ -42,7 +42,7 @@ def make_plain(data):
         'timeout': time_limit(data)}
 
 
-def make_quiz(data):
+def make_quiz(data, mix):
     input_data = data['input_data']
     qi = 0
     for q in input_data:
@@ -53,7 +53,8 @@ def make_quiz(data):
             ai += 1
         q['q'] = re.sub(r'\<\/?p\>', '', utils.web.markdown(q['q']))
         qi += 1
-        random.shuffle(q['items'])
+        if mix:
+            random.shuffle(q['items'])
     return {
         'input': ['quiz', input_data],
         'answer': ['quiz', data['expected_answer']],

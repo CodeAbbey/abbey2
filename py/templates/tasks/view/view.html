@@ -14,6 +14,9 @@
   <div class="col-lg-12">
     {% if not session['username'] %}
     <span class="red">You need to login to get test data and submit solution...</span>
+      {% if ext %}
+        {% include 'tasks/view/x_ext.html' %}
+      {% endif %}
     {% elif not test %}
     <span class="green">No checker for this task... strange... :)</span>
     {% else %}

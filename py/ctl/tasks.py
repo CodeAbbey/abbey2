@@ -26,13 +26,24 @@ def task_view(id):
     if task_data is None:
         flask.abort(404)
     (title, text) = task_data
-    if 'username' in flask.session:
-        test = load_test_stuff(id_clean, flask.session['userid'])
-    else:
-        test = None
+    (test, ext) = test_and_ext(id_clean)
     data = {'title': title, 'text': text, 'id': id}
     return flask.render_template(
-        'tasks/view/view.html', data=data, test=test, robots='index,follow')
+        'tasks/view/view.html', robots='index,follow',
+        data=data, test=test, ext=ext)
+
+
+def test_and_ext(taskid):
+    test = None
+    ext = None
+    if 'username' in flask.session:
+        test = load_test_stuff(taskid, flask.session['userid'])
+    else:
+        checker_code = dao.tasks.load_checker(taskid)
+        if re.match(r'check_type\s+\=\s+.quiz.', checker_code.decode('utf-8')):
+            checker_data = utils.check.checker_exec(checker_code, mix=False)
+            ext = checker_data['input']
+    return (test, ext)
 
 
 def load_test_stuff(taskid, userid):

@@ -1,0 +1,10 @@
+{% for q in ext[1] %}
+<div>{{ loop.index }}. {{ q['q'] | safe }}
+  <ul>
+  {% for a in q['items'] %}
+    <li>{{ a.text | safe }}</li>
+  {% endfor %}
+  </ul>
+</div>
+{% endfor %}
+

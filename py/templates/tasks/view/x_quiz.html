@@ -1,5 +1,5 @@
 {% for q in test[1] %}
-<div>{{ q['q'] | safe }}
+<div>{{ loop.index }}. {{ q['q'] | safe }}
   <ul>
   {% for a in q['items'] %}
     <li><input name="{{ a.id }}" type="checkbox"/> <label for="{{ a.id }}">{{ a.text | safe }}</label></li>
