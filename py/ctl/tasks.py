@@ -26,14 +26,14 @@ def task_view(id):
     if task_data is None:
         flask.abort(404)
     (title, text) = task_data
-    (test, ext) = test_and_ext(id_clean)
+    (test, ext) = data_test_and_ext(id_clean)
     data = {'title': title, 'text': text, 'id': id}
     return flask.render_template(
         'tasks/view/view.html', robots='index,follow',
         data=data, test=test, ext=ext)
 
 
-def test_and_ext(taskid):
+def data_test_and_ext(taskid):
     test = None
     ext = None
     if 'username' in flask.session:
