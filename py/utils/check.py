@@ -7,6 +7,7 @@ import base64
 import re
 import flask
 
+import dao.tasks
 import utils.web
 
 
@@ -119,6 +120,18 @@ def quiz_wrong_percentage(expected, answer):
     missed = len(expected.difference(answer))
     extra = len(answer.difference(expected))
     return (missed + extra) * 50 / len(expected)
+
+
+def verify_answer(taskid, expected, answer):
+    if not expected.startswith('?runchk'):
+        return ((expected == answer), None)
+    else:
+        checker_code = dao.tasks.load_checker(taskid)
+        local_vars = {user_answer: answer, saved_data: expected[8:]}
+        exec(checker_code, {}, local_vars)
+        res = local_vars['check_result']
+        solved = (res == 'ok')
+        return (solved, None if solved else res)
 
 
 def run_code(source, input_data, lang):

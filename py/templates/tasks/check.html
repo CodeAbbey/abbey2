@@ -15,10 +15,14 @@
       <p class="red">Regretfully you missed the time limit of {{ result.timeout }}</p>
       {% endif %}
       {% if result.type == 'plain' %}
-      <p>You replied with:</p>
-      <pre>{{ result.answer }}</pre>
-      <p>And expected was:</p>
-      <pre>{{ result.expected }}</pre>
+        {% if result.comment %}
+        <pre>{{ result.comment }}</pre>
+        {% else %}
+        <p>You replied with:</p>
+        <pre>{{ result.answer }}</pre>
+        <p>And expected was:</p>
+        <pre>{{ result.expected }}</pre>
+        {% endif %}
       {% elif result.type == 'quiz' %}
       <p>Hint: your answer is great but needs to be {{ result.hint }}% more correct to pass :)</p>
       {% endif %}

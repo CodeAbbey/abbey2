@@ -97,7 +97,7 @@ def process_submission(taskid, expected, timeout, answer, solution, lang):
     expected = expected[1]
     result = {'taskid': taskid, 'catid': re.sub(r'^([a-z]+).*', r'\1', taskid)}
     result['type'] = task_type
-    solved = (expected == answer)
+    (solved, comment) = utils.check.verify_answer(taskid, expected, answer)
     if int(time.time()) > timeout[0]:
         solved = False
         result['timeout'] = timeout[1]
@@ -109,6 +109,7 @@ def process_submission(taskid, expected, timeout, answer, solution, lang):
     if task_type == 'plain':
         result['expected'] = expected
         result['answer'] = answer
+        result['comment'] = comment
     elif task_type == 'quiz':
         wrongs = utils.check.quiz_wrong_percentage(expected, answer)
         result['hint'] = str(int(wrongs + 0.5))
