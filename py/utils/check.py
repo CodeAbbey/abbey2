@@ -127,8 +127,9 @@ def verify_answer(taskid, expected, answer):
         return ((expected == answer), None)
     else:
         checker_code = dao.tasks.load_checker(taskid)
-        local_vars = {user_answer: answer, saved_data: expected[8:]}
-        exec(checker_code, {}, local_vars)
+        local_vars = {}
+        global_vars = {'user_answer': answer, 'saved_data': expected[8:]}
+        exec(checker_code, global_vars, local_vars)
         res = local_vars['check_result']
         solved = (res == 'ok')
         return (solved, None if solved else res)

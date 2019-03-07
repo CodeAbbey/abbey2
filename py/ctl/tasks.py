@@ -40,6 +40,8 @@ def data_test_and_ext(taskid):
         test = load_test_stuff(taskid, flask.session['userid'])
     else:
         checker_code = dao.tasks.load_checker(taskid)
+        if checker_code is None:
+            return (None, None)
         if re.match(r'check_type\s+\=\s+.quiz.', checker_code.decode('utf-8')):
             checker_data = utils.check.checker_exec(checker_code, mix=False)
             ext = checker_data['input']
