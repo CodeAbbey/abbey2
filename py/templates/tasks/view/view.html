@@ -10,6 +10,8 @@
   </div>
 </div>
 
+{% if not '--?pygame--' in data['text'] %}
+
 <div class="row">
   <div class="col-lg-12">
     {% if not session['username'] %}
@@ -51,6 +53,11 @@
     {% endif %}
   </div>
 </div>
+
+{% else %}
+{% include 'tasks/view/x_pygame.html' %}
+{% endif%}
+
 {% endblock %}
 
 {% block more_scripts %}
@@ -62,4 +69,11 @@
 {% include 'tasks/view/task_view.js' %}
 </script>
 {% endif %}
+
+<script>
+if (window.afterJqueryLoaded) {
+    window.afterJqueryLoaded();
+}
+</script>
+
 {% endblock %}
