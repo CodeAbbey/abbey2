@@ -1,10 +1,13 @@
-import _sys, json
-from browser import document, window, alert
+import _sys
+import json
+from browser import window, alert
 from javascript import JSConstructor
+
 
 class Struct:
     def __init__(self):
         pass
+
 
 def dict_to_obj(d):
     if type(d) is list:
@@ -17,31 +20,40 @@ def dict_to_obj(d):
         setattr(o, k, v)
     return o
 
+
 def json_to_obj(s):
     return dict_to_obj(json.loads(s))
+
 
 def done(operations):
     pass
 
+
 def _input():
     return ''
+
 
 def _write_err(x):
     alert(x)
 
+
 def setup(write):
     _sys.stdout.write = write
+
 
 def _time():
     Date = JSConstructor(window.Date)
     return Date().getTime()
 
+
 def dbg(s):
     window.console.log(s)
 
-def runner(just_check = True):
-    ns = {'__name__':'__game__', 'setup':setup, 'done':done, '_time':_time,
-        'input':_input, 'dbg':dbg}
+
+def runner(just_check=True):
+    ns = {
+        '__name__': '__game__', 'setup': setup, 'done': done,
+        '_time': _time, 'input': _input, 'dbg': dbg}
     code = window.brEditor.getValue()
     try:
         lc = {}
@@ -54,7 +66,7 @@ def runner(just_check = True):
         dbg('exc: ' + str(e))
         window.modalAlert('Some Error:', str(e))
 
+
 window.runner = runner
 
-#_sys.stdout.write = _write
 _sys.stderr.write = _write_err
