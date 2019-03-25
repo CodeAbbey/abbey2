@@ -47,9 +47,9 @@ def runner(just_check = True):
         lc = {}
         exec(code, ns, lc)
         if just_check:
-            window.selfCheck(lc['count_win'])
+            window.selfCheck(lc[window.customFunc])
         else:
-            window.verifyAndSubmit(lc['count_win'])
+            window.verifyAndSubmit(lc[window.customFunc])
     except Exception as e:
         dbg('exc: ' + str(e))
         window.modalAlert('Some Error:', str(e))

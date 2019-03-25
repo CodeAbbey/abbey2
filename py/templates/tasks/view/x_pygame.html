@@ -47,7 +47,8 @@ function afterJqueryLoaded() {
         brEditor = ace.edit('editor');
         brEditor.getSession().setMode("ace/mode/python");
         $('#game-field').detach().appendTo('#game-pane').show();
-        brEditor.setValue('def count_win(money, target, dice):\n    return 0\n');
+        var stubCode = $('#stub-code').text();
+        brEditor.setValue(stubCode);
         brEditor.getSelection().selectFileStart();
         brython(1);
         $('#button-test').click(function(){
@@ -58,7 +59,9 @@ function afterJqueryLoaded() {
             $('[name=solution]').text(brEditor.getValue());
             $('#submission-form').submit();
         });
-        $('#button-reload').click(reloadCode);
+        if (typeof(reloadCode) != 'undefined') {
+            $('#button-reload').click(reloadCode);
+        }
     });
 }
 
