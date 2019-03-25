@@ -4,7 +4,7 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/CodeAbbey/abbey2.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/CodeAbbey/abbey2.svg)
 
-**[Live demo at rodiongork.pythonanywhere.com](https://rodiongork.pythonanywhere.com/)**
+**Our new site - LIVE at [https://openabbey.com](https://rodiongork.pythonanywhere.com/)**
 
 **[Information for contributors](https://github.com/CodeAbbey/abbey2/wiki)**
 
