@@ -51,14 +51,22 @@ function afterJqueryLoaded() {
         var stubCode = $('#stub-code').text();
         brEditor.setValue(stubCode);
         brEditor.getSelection().selectFileStart();
-        brython(1);
+        brython();
         $('#button-test').click(function(){
-            window.runner();
+            if (window['runner']) {
+                window.runner();
+            } else {
+                alert('Please, retry in a few seconds...');
+            }
         });
         $('#button-verify').click(function(){
-            window.runner(false);
-            $('[name=solution]').text(brEditor.getValue());
-            $('#submission-form').submit();
+            if (window['runner']) {
+                window.runner(false);
+                $('[name=solution]').text(brEditor.getValue());
+                $('#submission-form').submit();
+            } else {
+                alert('Please, retry in a few seconds!');
+            }
         });
         if (typeof(reloadCode) != 'undefined') {
             $('#button-reload').click(reloadCode);
