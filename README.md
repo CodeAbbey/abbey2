@@ -12,7 +12,7 @@ attempt to create one. The goals are:
 - to allow more than one directions of leaning
 - to introduce some new kinds of problems (quizzes and in-browser "games")
 
-**Our new site is already LIVE at [https://openabbey.com](https://rodiongork.pythonanywhere.com/)**
+**Our new site is already LIVE at [https://openabbey.com](https://openabbey.com)**
 
 ### Information for contributors
 
