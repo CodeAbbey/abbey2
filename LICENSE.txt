@@ -8,7 +8,10 @@ of the materials in this repository.
 1. Not "Open-Source"
 
 This project is not "Open-Source" in OSI definition.
-It is rather "Source-Available", at least for now.
+It is rather "Source-Available", at least for now, while it is yet been tested.
+
+But this license is going to be changed to proper "open-source" (probably MIT or Apache)
+in future.
 
 2. Allowed to study
 
@@ -16,7 +19,7 @@ This project is made public mainly for educational purposes.
 So everyone is allowed to:
 - study these sources
 - propose changes and improvements via PR's
-- run it on private machine or in the closed networks.
+- run it on private machine or in the closed networks (e.g. for college contest).
 
 3. Prohibitions
 
@@ -34,9 +37,10 @@ What is not allowed:
 
 Why it is so? This project is not professional product, and its contributors are not
 expected to be experts. So it (or its derivatives) may lack certain security features
-or have some flaws leading to inconvenience for end-users.
+or have some flaws leading to inconvenience for end-users. Hopefully we can improve
+this situation in future and make the license "proper open-source".
 
 We do not provide any warranty, but even more - we don't want feel any kind of "moral"
 responsibility for any problems or complications arising from the misuse of this software.
 
-(again, if personal exception is needed, request may be submitted)
+(again, if personal exception is needed, please submit your request)

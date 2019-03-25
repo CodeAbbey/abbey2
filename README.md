@@ -4,9 +4,19 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/CodeAbbey/abbey2.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/CodeAbbey/abbey2.svg)
 
-**Our new site - LIVE at [https://openabbey.com](https://rodiongork.pythonanywhere.com/)**
+New and open-source version of [CodeAbbey](https://www.codeabbey.com) website. At least an
+attempt to create one. The goals are:
 
-**[Information for contributors](https://github.com/CodeAbbey/abbey2/wiki)**
+- to have more manageable code, and in Python rather than PHP (mainly because Python is the
+    most popular among CodeAbbey users)
+- to allow more than one directions of leaning
+- to introduce some new kinds of problems (quizzes and in-browser "games")
+
+**Our new site is already LIVE at [https://openabbey.com](https://rodiongork.pythonanywhere.com/)**
+
+### Information for contributors
+
+**[also at project wiki](https://github.com/CodeAbbey/abbey2/wiki)**
 
 To work with project locally, one needs `Python 3.7` with certain libraries and `MySQL 5.7`.
 
