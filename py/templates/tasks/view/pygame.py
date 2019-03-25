@@ -1,5 +1,6 @@
-import _sys
+import sys
 import json
+import traceback
 from browser import window, alert
 from javascript import JSConstructor
 
@@ -38,7 +39,7 @@ def _write_err(x):
 
 
 def setup(write):
-    _sys.stdout.write = write
+    sys.stdout.write = write
 
 
 def _time():
@@ -63,10 +64,11 @@ def runner(just_check=True):
         else:
             window.verifyAndSubmit(lc[window.customFunc])
     except Exception as e:
-        dbg('exc: ' + str(e))
-        window.modalAlert('Some Error:', str(e))
+        window.modalAlert(
+            'Some Error:',
+            str(traceback.format_exc()))
 
 
 window.runner = runner
 
-_sys.stderr.write = _write_err
+sys.stderr.write = _write_err

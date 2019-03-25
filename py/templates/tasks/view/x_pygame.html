@@ -1,4 +1,5 @@
-<script src="https://rodiongork.github.io/PyTanks/brython/brython.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.7.1/brython.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.7.1/brython_stdlib.js"></script>
 
 <div id="main-pane" class="row pb-3">
   <div id="code-pane" class="col-lg-6">
@@ -65,10 +66,18 @@ function afterJqueryLoaded() {
     });
 }
 
+function parsePyError(e) {
+    if (e['$py_error']) {
+        return 'line ' + e['$line_info'].replace(/\,.*/, '') + ': ' + e['args'][0];
+    }
+    return e;
+}
+
 function modalAlert(title, text) {
     var dialog = $('#alert-modal');
     dialog.find('.modal-header').text(title);
-    dialog.find('.modal-body').text(text).append('<div class="hint">If this do not help we shall add some tutorial on debugging</div>');
+    text = text.replace('\n', '<br/>').replace(/in\s\$exec\S+\s+/, '').replace(/.*\"\<string\>\"\,\s+/ms, '');
+    dialog.find('.modal-body').html(text).append('<div class="hint">If this do not help we shall add some tutorial on debugging</div>');
     dialog.modal('show');
 }
 </script>
