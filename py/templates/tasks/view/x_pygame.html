@@ -84,7 +84,7 @@ function parsePyError(e) {
 function modalAlert(title, text) {
     var dialog = $('#alert-modal');
     dialog.find('.modal-header').text(title);
-    text = text.replace('\n', '<br/>').replace(/in\s\$exec\S+\s+/, '').replace(/.*\"\<string\>\"\,\s+/ms, '');
+    text = text.replace('\n', '<br/>').replace(/in\s\$exec\S+\s+/, '').replace(/.*\"\<string\>\"\,\s+/m, '');
     dialog.find('.modal-body').html(text).append('<div class="hint">If this do not help we shall add some tutorial on debugging</div>');
     dialog.modal('show');
 }
