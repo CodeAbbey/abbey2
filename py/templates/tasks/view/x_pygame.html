@@ -51,7 +51,7 @@ function afterJqueryLoaded() {
         var stubCode = $('#stub-code').text();
         brEditor.setValue(stubCode);
         brEditor.getSelection().selectFileStart();
-        brython();
+        brython(1);
         $('#button-test').click(function(){
             if (window['runner']) {
                 window.runner();
