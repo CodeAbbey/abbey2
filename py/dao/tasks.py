@@ -35,12 +35,13 @@ def load_list(cat_id):
 
 
 def load_one(id):
-    res = dao.utils.query_one('tasks', 'id=%s', (id,), 'title')
-    if res is None:
+    cat_id = re.sub(r'\-.*', '', id)
+    title = dao.utils.query_one('tasks', 'id=%s', (id,), 'title')
+    cat = dao.utils.query_one('tasks', 'id=%s', ('!' + cat_id,), 'title')
+    if title is None or cat is None:
         return None
-    (title,) = res
     text = dao.utils.query_markdown_blob('t.' + id + '.en')
-    return (title, text)
+    return (title[0], text, cat_id, cat[0])
 
 
 def load_checker(id):

@@ -25,9 +25,9 @@ def task_view(id):
     task_data = dao.tasks.load_one(id_clean)
     if task_data is None:
         flask.abort(404)
-    (title, text) = task_data
+    (title, text, cat_id, cat) = task_data
     (test, ext) = data_test_and_ext(id_clean)
-    data = {'title': title, 'text': text, 'id': id}
+    data = {'title': title, 'text': text, 'id': id, 'cat': (cat_id, cat)}
     return flask.render_template(
         'tasks/view/view.html', robots='index,follow',
         data=data, test=test, ext=ext)
