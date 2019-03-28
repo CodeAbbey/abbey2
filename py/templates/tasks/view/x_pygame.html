@@ -51,6 +51,9 @@ function afterJqueryLoaded() {
         var stubCode = $('#stub-code').text();
         brEditor.setValue(stubCode);
         brEditor.getSelection().selectFileStart();
+        var waitWarn = waitPythonWarning = $('<div class="text-center">Python is being initialized...</div>');
+        waitWarn.css('background', 'yellow').prependTo('#game-pane');
+        window.waitPythonWarning = [waitWarn, setInterval(isPythonInitialized, 1000)];
         brython(1);
         $('#button-test').click(function(){
             if (window['runner']) {
@@ -72,6 +75,14 @@ function afterJqueryLoaded() {
             $('#button-reload').click(reloadCode);
         }
     });
+}
+
+function isPythonInitialized() {
+    console.log('checking python...');
+    if (window['runner']) {
+        window.waitPythonWarning[0].hide(500);
+        clearInterval(window.waitPythonWarning[1]);
+    }
 }
 
 function parsePyError(e) {
