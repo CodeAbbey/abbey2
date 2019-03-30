@@ -1,6 +1,6 @@
 create database abbey;
-create user 'webdbuser'@'%' identified by 'w3bp@ssw0rd';
-grant select,insert,update,delete on abbey.* to 'webdbuser'@'%';
+create user 'webdbuser'@'localhost' identified by 'w3bp@ssw0rd';
+grant select,insert,update,delete on abbey.* to 'webdbuser'@'localhost';
 
 use abbey;
 

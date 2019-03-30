@@ -1,0 +1,1 @@
+docker run -it --rm --name local-abbey-run -v $(pwd)/$(dirname "$0")/../py:/code -p 5000:5000 local-abbey
