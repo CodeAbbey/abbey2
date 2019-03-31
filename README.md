@@ -23,7 +23,10 @@ launch the developer's version of site at your desktop and play a bit with it.
 
 **Project uses `Python 3.7` with some libraries for website engine and `MySQL 5.7` (or higher) as a database.**
 
-There are roughly 2 ways of setting this up locally:
+[![Youtube demo of openabbey local deploy with docker](https://i.ytimg.com/vi/a_zncTSB-rg/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLBoQLfVFnNciNa9JQKPYxaO7tTfow)](https://www.youtube.com/watch?v=a_zncTSB-rg)  
+_demonstration of the 2-nd approach mentioned below_
+
+There are several ways of setting this up locally:
 
 1. Either install proper version of Python and MySQL manually.
 2. **Recommended way** - to use `docker` to automatically setup environment in container.
@@ -33,7 +36,7 @@ Using `docker` is recomended not only because it is much simple, but also becaus
 modify your system Python or anything. It automatically creates small "virtual machine" according to description
 in the supplied `Dockerfile` - and when you don't need it anymore, you simply delete the image.
 
-Here are the steps:
+Here are the steps (also they are shown in video linked above):
 - clone (or download as `zip`) the project folder and enter it
 - [install docker](https://docs.docker.com/install/) specific to your OS
 - run `./docker/build-local-server.sh` to create docker image with python, its libraries and mysql
