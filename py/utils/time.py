@@ -3,7 +3,7 @@ import time
 
 
 def ts_to_str(ts):
-    return datetime.fromtimestamp(ts).strftime("%Y-%m-%d %I:%M:%S")
+    return datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S")
 
 
 def ts_ago(ts):
