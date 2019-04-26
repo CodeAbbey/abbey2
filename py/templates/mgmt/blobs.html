@@ -6,21 +6,15 @@
 <div class="row">
   <div class="col-lg-12">
     <h1>View or update Blobs</h1>
-    <div class="text-danger">This does not work yet</div>
   </div>
 </div>
 <div class="row form-group">
-  <div class="col-lg-3">
+  <div class="col-lg-6">
     <input id="blob-id" class="form-control" placeholder="Blob ID"/>
   </div>
-  <div class="col-lg-3 text-center">
+  <div class="col-lg-6 text-right">
     <button id="btn-load" class="btn">Load</button>
-  </div>
-  <div class="col-lg-3 text-center">
     <button id="btn-save" class="btn">Save</button>
-  </div>
-  <div class="col-lg-3">
-    <input id="secret" class="form-control" placeholder="Blob Secret"/>
   </div>
 </div>
 <div class="row form-group">
@@ -33,5 +27,45 @@
 {% block more_scripts %}
 
 <script>
+
+$(function() {
+    function urlForBlob() {
+        return location.href + '/' + $('#blob-id').val();
+    }
+    
+    function errorResponse(data) {
+        alert('Error: ' + data.status);
+    }
+    
+    $('#btn-load').click(function() {
+        $.ajax({
+            type: 'GET',
+            url: urlForBlob(),
+            success: function(data, s, jqh) {
+                if (jqh.status != 204) {
+                    $('#blob-text').val(data);
+                } else {
+                    alert('No such blob!');
+                }
+            },
+            error: errorResponse,
+        });
+    });
+    
+    $('#btn-save').click(function() {
+        $.ajax({
+            type: 'POST',
+            url: urlForBlob(),
+            data: $('#blob-text').val(),
+            contentType: 'text/plain',
+            success: function() {
+                alert('Success!');
+            },
+            error: errorResponse,
+        });
+    });
+});
+
+</script>
 
 {% endblock %}
