@@ -67,3 +67,9 @@ def action_log_recent(limit):
 
 def update_userblob(id, body):
     dao.utils.update_blob(id, body, 'userblobs')
+
+
+def get_flags(userid):
+    res = dao.utils.query_one(
+        'userflags', 'userid=%s', (userid,), "coalesce(group_concat(flag),'')")
+    return res[0].split(',')

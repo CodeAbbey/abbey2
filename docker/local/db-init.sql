@@ -24,6 +24,11 @@ create table userblobs(
     id varchar(32) primary key,
     val blob);
 
+create table userflags(
+    userid int,
+    flag varchar(8),
+    index uidflag (userid));
+
 create table usertask(
     userid int,
     taskid varchar(16),

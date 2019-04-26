@@ -74,8 +74,11 @@ def attempt_register(username, password, email):
 def login_success(username, uid, newcomer=False):
     flask.session['username'] = username
     flask.session['userid'] = uid
+    flags = dao.users.get_flags(uid)
+    flask.session['userflags'] = flags
     flask.flash('Greetings, Mortal!')
-    dao.users.action_log_write(uid, 'LOG', '' if not newcomer else 'new')
+    if 'inv' not in flags:
+        dao.users.action_log_write(uid, 'LOG', '' if not newcomer else 'new')
     return flask.redirect(flask.url_for('users.dashboard'))
 
 
