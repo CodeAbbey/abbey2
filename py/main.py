@@ -1,20 +1,22 @@
-import os
-import json
 import time
 import flask
 from ctl.tasks import tasks_ctl
 from ctl.users import users_ctl
 from ctl.tools import tools_ctl
+from ctl.mgmt import mgmt_ctl
 import dao.utils
 import dao.users
+import utils.configurator
 import utils.web
 import utils.time
 
 
 app = flask.Flask(__name__, static_url_path='/s')
+utils.configurator.configure(app)
 app.register_blueprint(tasks_ctl)
 app.register_blueprint(users_ctl)
 app.register_blueprint(tools_ctl)
+app.register_blueprint(mgmt_ctl, url_prefix=app.config['MGMT_URL'])
 
 
 @app.route('/')
@@ -59,27 +61,6 @@ def teardown(error):
     dao.utils.db_close()
 
 
-def config():
-    path = os.path.realpath(
-        os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    config_from_file(path + '/config.json')
-    additional_cfg = path + '/../.config-custom.json'
-    if os.path.isfile(additional_cfg):
-        config_from_file(additional_cfg)
-
-
-def config_from_file(filename):
-    with open(filename) as cfg_json:
-        cfg = json.load(cfg_json)
-        for key in cfg:
-            val = cfg[key]
-            if isinstance(val, str) and val[0] == '$':
-                app.config[key] = os.environ.get(val[1:])
-            else:
-                app.config[key] = val
-
-
-config()
 if __name__ == '__main__':
     app.config['SECRET_KEY'] = 'dummy-key'
     app.run(host='0.0.0.0', port=5000, debug=True)

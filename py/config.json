@@ -7,5 +7,6 @@
     "CHECKER_SERVER": "http://httpstat.us/404 dummy-salt",
     "BLOB_SALT": "dummy-salt",
     "HACKERRANK_KEY": "nokey",
+    "MGMT_URL": "/mgmt",
     "SECRET_KEY": null
 }

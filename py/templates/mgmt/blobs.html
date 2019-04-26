@@ -1,0 +1,37 @@
+{% extends "_default.html" %}
+
+{% block title %} View or update Blobs {% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <h1>View or update Blobs</h1>
+    <div class="text-danger">This does not work yet</div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-3">
+    <input id="blob-id" class="form-control" placeholder="Blob ID"/>
+  </div>
+  <div class="col-lg-3 text-center">
+    <button id="btn-load" class="btn">Load</button>
+  </div>
+  <div class="col-lg-3 text-center">
+    <button id="btn-save" class="btn">Save</button>
+  </div>
+  <div class="col-lg-3">
+    <input id="secret" class="form-control" placeholder="Blob Secret"/>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-12">
+    <textarea id="blob-text" style="height:500px;font-family:monospace;" class="form-control"></textarea>
+  </div>
+</div>
+{% endblock %}
+
+{% block more_scripts %}
+
+<script>
+
+{% endblock %}
