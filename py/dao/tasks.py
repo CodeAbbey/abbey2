@@ -78,3 +78,13 @@ def update_usertask_record(userid, taskid, result):
         return None
     cur.close()
     cn.commit()
+
+
+def update_title(taskid, title):
+    query = 'insert into tasks (id, title) values (%s, %s)' \
+        + ' on duplicate key update title=%s'
+    dao.utils.execute_change(query, (taskid, title, title))
+
+
+def delete_title(taskid):
+    dao.utils.execute_change('delete from tasks where id=%s', (taskid,))

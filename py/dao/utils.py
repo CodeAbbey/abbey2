@@ -59,11 +59,15 @@ def query_markdown_blob(bid):
     return utils.web.markdown(val[0].decode('utf-8'))
 
 
-def update_blob(id, body, blobtable):
+def execute_change(query, params):
     cn = db_conn()
     cur = cn.cursor()
-    query = 'insert into ' + blobtable + ' (id, val) values (%s, %s)' \
-        + ' on duplicate key update val=%s'
-    cur.execute(query, (id, body, body))
+    cur.execute(query, params)
     cn.commit()
     cur.close()
+
+
+def update_blob(id, body, blobtable):
+    query = 'insert into ' + blobtable + ' (id, val) values (%s, %s)' \
+        + ' on duplicate key update val=%s'
+    execute_change(query, (id, body, body))

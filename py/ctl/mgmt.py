@@ -1,5 +1,6 @@
 import flask
 
+import dao.tasks
 import dao.utils
 
 mgmt_ctl = flask.Blueprint('mgmt', __name__)
@@ -14,7 +15,22 @@ def check_access():
 
 @mgmt_ctl.route('/')
 def mgmt_main():
-    return 'Hi, this is a mgmt page!'
+    return flask.render_template('mgmt/index.html')
+
+
+@mgmt_ctl.route('/task_update', methods=['POST'])
+def task_update():
+    tid = flask.request.form['taskid']
+    title = flask.request.form['tasktitle']
+    msg = "task #%s was " % tid
+    if title != 'DELETE-IT-PLEASE':
+        dao.tasks.update_title(tid, title)
+        msg += "named '%s'" % title
+    else:
+        dao.tasks.delete_title(tid)
+        msg += "deleted :("
+    return flask.render_template(
+        'mgmt/result.html', msg=msg)
 
 
 @mgmt_ctl.route('/blobs')
