@@ -3,6 +3,8 @@ import time
 
 
 def ts_to_str(ts):
+    if ts is None:
+        ts = time.time()
     return datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S")
 
 

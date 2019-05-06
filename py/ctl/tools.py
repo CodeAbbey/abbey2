@@ -2,10 +2,12 @@ import json
 import base64
 import re
 import flask
+import tempfile
 
 import dao.users
 import dao.utils
 import utils.check
+import utils.time
 
 tools_ctl = flask.Blueprint('tools', __name__)
 
@@ -33,6 +35,8 @@ def update_stats():
         + "order by cat, cnt desc) as t where t.rn <= 10", ())
     cn.commit()
     cur.close()
+    with open(tempfile.gettempdir() + '/abbey-last-update.txt', 'w') as f:
+        f.write(utils.time.ts_to_str(None))
     return 'ok'
 
 
