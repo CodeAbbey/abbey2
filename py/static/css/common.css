@@ -53,6 +53,10 @@ h1 {
     overflow: hidden;
 }
 
+.container {
+    max-width: 1400px;
+}
+
 h1.main-hidden {
     font-size: 1rem;
     color: white;
