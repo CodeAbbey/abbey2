@@ -94,4 +94,7 @@ pre code {
     margin: 0px 50px;
     text-align: left;
 }
-
+canvas.full-width {
+    width: 100%;
+    height: auto;
+}
