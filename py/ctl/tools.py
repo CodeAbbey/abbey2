@@ -63,9 +63,7 @@ def run_code():
     )
 
 
-@tools_ctl.route('/.well-known/acme-challenge/<pageid>')
-def acme_challenge(pageid):
-    path = flask.current_app.root_path
-    with open(path + '/../acme-challenge.json') as acme_json:
-        data = json.load(acme_json)
-        return data.get(pageid, '...no_entry...')
+@tools_ctl.route('/.well-known/acme-challenge/<filename>')
+def acme_challenge(filename):
+    return flask.send_from_directory(
+        flask.current_app.static_folder, filename, mimetype='plain/text')
