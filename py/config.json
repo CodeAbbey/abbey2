@@ -8,5 +8,6 @@
     "BLOB_SALT": "dummy-salt",
     "HACKERRANK_KEY": "nokey",
     "MGMT_URL": "/mgmt",
+    "SITE_NAME": "OpenAbbey",
     "SECRET_KEY": null
 }

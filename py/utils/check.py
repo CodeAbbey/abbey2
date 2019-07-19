@@ -145,7 +145,7 @@ def run_code(source, input_data, lang):
         'lang': lang,
         'api_key': flask.current_app.config['HACKERRANK_KEY']
     }
-    url = 'http://api.hackerrank.com/checker/submission.json'
+    url = 'https://api.hackerrank.com/checker/submission.json'
     req = request.Request(url, parse.urlencode(data).encode())
     try:
         with request.urlopen(req) as resp:

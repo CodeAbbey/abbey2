@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="{{ robots }}">
     {% block metas %}{% endblock %}
-    <title>{% block title %}{% endblock %} - {{ sitename }}</title>
+    <title>{% block title %}{% endblock %} - {{ config.SITE_NAME }}</title>
     <link href="{{ url_for('static', filename = 'css/bs.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename = 'css/common.css', r=stat_ts) }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
@@ -17,7 +17,7 @@
 
     <nav class="navbar navbar-expand-md static-top">
       <div class="container">
-        <a class="navbar-brand" href="{{ url_for('main_page') }}">{{ sitename }}</a>
+        <a class="navbar-brand" href="{{ url_for('main_page') }}">{{ config.SITE_NAME }}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span>(^.,.^)</span>
         </button>

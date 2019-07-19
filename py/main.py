@@ -52,8 +52,7 @@ def inject_globals():
     return dict(
         stat_ts=int(time.time()/(15*60)),
         canon=utils.web.canonical(),
-        robots='noindex,nofollow',
-        sitename='OpenAbbey')
+        robots='noindex,nofollow')
 
 
 @app.teardown_appcontext
