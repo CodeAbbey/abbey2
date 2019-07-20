@@ -1,1 +1,1 @@
-docker build -t local-abbey $(dirname "$0")/local
+docker build -t local-abbey --network=host $(dirname "$0")/local
