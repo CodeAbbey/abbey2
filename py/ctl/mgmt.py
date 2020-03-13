@@ -50,7 +50,8 @@ def update_blob(id, body):
 
 
 def blob_list_view(id):
-    body = dao.utils.query_many('blobs', 'id', None, '*', 'LIKE \'' + id + '\'')
+    body = dao.utils.query_many(
+            'blobs', 'id', None, '*', 'LIKE \'' + id + '\'')
     list_str = ''
     if body is None:
         return ('', 204)
@@ -62,7 +63,7 @@ def blob_list_view(id):
 @mgmt_ctl.route('/blobs/<id>', methods=['GET'])
 def blob_view(id):
     if '*' in id:
-        id = id.replace('*','%')
+        id = id.replace('*', '%')
         return blob_list_view(id)
     body = dao.utils.query_one('blobs', 'id=%s', (id,), 'val')
     if body is None:
